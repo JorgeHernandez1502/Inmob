@@ -24,17 +24,23 @@
             <p class="text-gray-400 text-sm mb-6">Selecciona tu perfil de asesor para ingresar al sistema</p>
             
             <div class="space-y-3">
-                <button onclick="loginAs('Mario Alcala')" class="w-full bg-gray-900 hover:bg-gray-750 p-3 rounded-xl border border-gray-700 hover:border-emerald-500 text-left flex items-center gap-3 transition">
-                    <div class="bg-emerald-500/20 text-emerald-400 px-2.5 py-1 rounded-lg font-bold text-xs">CM</div>
+                <button onclick="loginAs('Mario Alcala')" class="w-full bg-gray-900 hover:bg-gray-750 p-3 rounded-xl border border-gray-700 hover:border-emerald-500 text-left flex items-center gap-3 transition cursor-pointer">
+                    <div class="bg-emerald-500/20 text-emerald-400 px-2.5 py-1 rounded-lg font-bold text-xs">MA</div>
                     <span class="text-sm font-medium text-white">Mario Alcala (Ceo)</span>
                 </button>
-                <button onclick="loginAs('Melissa Alcala')" class="w-full bg-gray-900 hover:bg-gray-750 p-3 rounded-xl border border-gray-700 hover:border-emerald-500 text-left flex items-center gap-3 transition">
-                    <div class="bg-emerald-500/20 text-emerald-400 px-2.5 py-1 rounded-lg font-bold text-xs">SR</div>
+                <button onclick="loginAs('Melissa Alcala')" class="w-full bg-gray-900 hover:bg-gray-750 p-3 rounded-xl border border-gray-700 hover:border-emerald-500 text-left flex items-center gap-3 transition cursor-pointer">
+                    <div class="bg-emerald-500/20 text-emerald-400 px-2.5 py-1 rounded-lg font-bold text-xs">ME</div>
                     <span class="text-sm font-medium text-white">Melissa Alcala (Asesor Comercial)</span>
                 </button>
-                <button onclick="loginAs('Jorge Henandez')" class="w-full bg-gray-900 hover:bg-gray-750 p-3 rounded-xl border border-gray-700 hover:border-emerald-500 text-left flex items-center gap-3 transition">
-                    <div class="bg-emerald-500/20 text-emerald-400 px-2.5 py-1 rounded-lg font-bold text-xs">AS</div>
-                    <span class="text-sm font-medium text-white">Jorge Henandez (Becario en sistemas)</span>
+                <button onclick="loginAs('Jorge Hernandez')" class="w-full bg-gray-900 hover:bg-gray-750 p-3 rounded-xl border border-gray-700 hover:border-emerald-500 text-left flex items-center gap-3 transition cursor-pointer">
+                    <div class="bg-emerald-500/20 text-emerald-400 px-2.5 py-1 rounded-lg font-bold text-xs">JH</div>
+                    <span class="text-sm font-medium text-white">Jorge Hernandez (Becario en sistemas)</span>
+                </button>
+            </div>
+
+            <div class="mt-6 pt-4 border-t border-gray-750">
+                <button onclick="clearLocalStorageTotal()" class="text-xs text-gray-500 hover:text-red-400 transition cursor-pointer flex items-center justify-center gap-1.5 mx-auto">
+                    <i data-lucide="refresh-cw" class="w-3 h-3"></i> Limpiar memoria de este navegador
                 </button>
             </div>
         </div>
@@ -266,22 +272,20 @@
         </main>
 
         <footer class="bg-gray-850 p-4 text-center text-xs text-gray-500 border-t border-gray-800">
-            &copy; Inmob Ops - Panel Corporativo con Almacenamiento Local.
+            &copy; Inmob Ops - Panel Corporativo Privado.
         </footer>
     </div>
 
     <script>
-        // Arreglo maestro de los 6 miembros del equipo
         const MIEMBROS = ["Mario Alcala", "Melissa Alcala", "Jorge Hernandez"];
         let currentUser = "";
 
-        // Bases de datos locales inteligentes (Cargan de LocalStorage o inician vacías)
         let DB = {
             prospectos: JSON.parse(localStorage.getItem('inmob_prospectos')) || [
-                { id: "1", nombre: "Alejandro Marín", telefono: "+52 55 1234 5678", presupuesto: "$310,000 USD", interes: "Casa Colinas", asesor: "Sofía Rubio", etapa: "Propuesta Enviada 📄", comentarios: [{ user: "Sofía Rubio", texto: "Le encantó la vista de la recámara principal. Pendiente confirmar enganche.", date: "12/06" }] }
+                { id: "1", nombre: "Alejandro Marín", telefono: "+52 55 1234 5678", presupuesto: "$310,000 USD", interes: "Casa Colinas", asesor: "Melissa Alcala", etapa: "Propuesta Enviada 📄", comentarios: [{ user: "Melissa Alcala", texto: "Le encantó la vista de la recámara principal. Pendiente confirmar enganche.", date: "12/06" }] }
             ],
             tareas: JSON.parse(localStorage.getItem('inmob_tareas')) || [
-                { id: "1", miembro: "Sofía Rubio", desc: "Llamar urgentemente al prospecto Alejandro para confirmar si el depósito se hará esta semana.", user: "Carlos Mendoza" }
+                { id: "1", miembro: "Melissa Alcala", desc: "Llamar urgentemente al prospecto Alejandro para confirmar si el depósito se hará esta semana.", user: "Mario Alcala" }
             ],
             assets: JSON.parse(localStorage.getItem('inmob_assets')) || [
                 { id: "1", nombre: "Carpeta Drive Máster - renders e imágenes", tipo: "folder", url: "https://drive.google.com" }
@@ -291,48 +295,51 @@
             ]
         };
 
-        // Función para guardar los cambios en la memoria del navegador de forma automática
         function saveToLocalStorage(key) {
             localStorage.setItem(`inmob_${key}`, JSON.stringify(DB[key]));
         }
 
-        // Inicialización y carga de los selects dinámicamente según el arreglo de Miembros
         window.onload = function() {
+            // Llenar listas desplegables dinámicamente
             const pAsesorSelect = document.getElementById('p-asesor');
             const tMiembroSelect = document.getElementById('t-miembro');
+            pAsesorSelect.innerHTML = "";
+            tMiembroSelect.innerHTML = "";
             MIEMBROS.forEach(m => {
                 pAsesorSelect.innerHTML += `<option value="${m}">${m}</option>`;
                 tMiembroSelect.innerHTML += `<option value="${m}">${m}</option>`;
             });
 
-            // Si el usuario ya se había logueado anteriormente, salta el login
-            const savedUser = localStorage.getItem('inmob_current_user');
-            if (savedUser) { loginAs(savedUser); }
+            // 🌟 CORRECCIÓN EXPLICITA: Se elimina la carga automática de 'inmob_current_user' 
+            // para obligar a seleccionar perfil en cada recarga de página (F5)
+            logout();
             lucide.createIcons();
         };
 
-        // Sistema de Login (Selección de Perfil)
         function loginAs(userName) {
-    currentUser = userName;
-    localStorage.setItem('inmob_current_user', userName);
-    
-    // ESTA ES LA LÍNEA CLAVE: Debe decir userName (sin comillas)
-    document.getElementById('session-user').innerText = userName; 
-    
-    document.getElementById('login-screen').classList.add('hidden');
-    document.getElementById('app-content').classList.remove('hidden');
-    document.getElementById('app-content').classList.add('flex');
-    renderAll();
-}
+            currentUser = userName;
+            document.getElementById('session-user').innerText = userName; 
+            document.getElementById('login-screen').classList.add('hidden');
+            document.getElementById('app-content').classList.remove('hidden');
+            document.getElementById('app-content').classList.add('flex');
+            renderAll();
+        }
 
         function logout() {
-            localStorage.removeItem('inmob_current_user');
+            currentUser = "";
             document.getElementById('app-content').classList.remove('flex');
             document.getElementById('app-content').classList.add('hidden');
             document.getElementById('login-screen').classList.remove('hidden');
         }
 
-        // Navegación de Pestañas
+        // Limpieza de emergencia por cambios en esquemas locales
+        function clearLocalStorageTotal() {
+            if(confirm("¿Quieres vaciar la base de datos local de este navegador y restablecer los ejemplos?")) {
+                localStorage.clear();
+                location.reload();
+            }
+        }
+
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
             document.querySelectorAll('.tab-btn').forEach(b => {
@@ -345,7 +352,6 @@
             activeBtn.classList.add('bg-emerald-600', 'text-white');
         }
 
-        // ================= RENDERS GENERALES DE LA APP =================
         function renderAll() {
             renderProspectos();
             renderTareas();
@@ -354,7 +360,6 @@
             lucide.createIcons();
         }
 
-        // Renderizado de la lista de Prospectos con Botones de Acción
         function renderProspectos() {
             const tbody = document.getElementById('lista-prospectos');
             tbody.innerHTML = "";
@@ -370,9 +375,9 @@
                         <td class="p-3"><span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded text-xs font-medium">${p.etapa}</span></td>
                         <td class="p-3 text-right">
                             <div class="flex justify-end gap-1.5">
-                                <button onclick="openComentarios('${p.id}')" title="Comentarios/Bitácora" class="p-1.5 bg-gray-900 border border-gray-700 hover:border-blue-500 text-blue-400 rounded-lg cursor-pointer transition"><i data-lucide="message-square" class="w-3.5 h-3.5"></i></button>
-                                <button onclick="editProspecto('${p.id}')" title="Editar Prospecto" class="p-1.5 bg-gray-900 border border-gray-700 hover:border-amber-500 text-amber-400 rounded-lg cursor-pointer transition"><i data-lucide="edit-3" class="w-3.5 h-3.5"></i></button>
-                                <button onclick="deleteProspecto('${p.id}')" title="Eliminar Prospecto" class="p-1.5 bg-gray-900 border border-gray-700 hover:border-red-500 text-red-400 rounded-lg cursor-pointer transition"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
+                                <button onclick="openComentarios('${p.id}')" class="p-1.5 bg-gray-900 border border-gray-700 hover:border-blue-500 text-blue-400 rounded-lg cursor-pointer transition"><i data-lucide="message-square" class="w-3.5 h-3.5"></i></button>
+                                <button onclick="editProspecto('${p.id}')" class="p-1.5 bg-gray-900 border border-gray-700 hover:border-amber-500 text-amber-400 rounded-lg cursor-pointer transition"><i data-lucide="edit-3" class="w-3.5 h-3.5"></i></button>
+                                <button onclick="deleteProspecto('${p.id}')" class="p-1.5 bg-gray-900 border border-gray-700 hover:border-red-500 text-red-400 rounded-lg cursor-pointer transition"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
                             </div>
                         </td>
                     </tr>
@@ -380,7 +385,6 @@
             });
         }
 
-        // Acciones CRUD de Prospectos
         function saveProspecto(e) {
             e.preventDefault();
             const id = document.getElementById('p-id').value;
@@ -392,19 +396,14 @@
             const etapa = document.getElementById('p-etapa').value;
 
             if (id) {
-                // Actualizar Modo Edición
                 const index = DB.prospectos.findIndex(p => p.id === id);
-                if(index !== -1) {
-                    DB.prospectos[index] = { ...DB.prospectos[index], nombre, telefono, presupuesto, interes, asesor, etapa };
-                }
+                if(index !== -1) { DB.prospectos[index] = { ...DB.prospectos[index], nombre, telefono, presupuesto, interes, asesor, etapa }; }
             } else {
-                // Crear Nuevo Registro
                 DB.prospectos.push({ id: Date.now().toString(), nombre, telefono, presupuesto, interes, asesor, etapa, comentarios: [] });
             }
             saveToLocalStorage('prospectos');
             resetProspectoForm();
             renderProspectos();
-            lucide.createIcons();
         }
 
         function editProspecto(id) {
@@ -434,16 +433,14 @@
         }
 
         function deleteProspecto(id) {
-            if (confirm("¿Estás seguro de que deseas eliminar este prospecto del pipeline?")) {
+            if (confirm("¿Eliminar este prospecto?")) {
                 DB.prospectos = DB.prospectos.filter(p => p.id !== id);
                 saveToLocalStorage('prospectos');
                 renderProspectos();
                 closeComentarios();
-                lucide.createIcons();
             }
         }
 
-        // ================= SISTEMA DE COMENTARIOS/BITÁCORA INTEGRADA =================
         function openComentarios(id) {
             const p = DB.prospectos.find(item => item.id === id);
             if (!p) return;
@@ -453,15 +450,13 @@
             renderComentariosFeed(p);
         }
 
-        function closeComentarios() {
-            document.getElementById('comentarios-box').classList.add('hidden');
-        }
+        function closeComentarios() { document.getElementById('comentarios-box').classList.add('hidden'); }
 
         function renderComentariosFeed(p) {
             const feed = document.getElementById('feed-comentarios');
             feed.innerHTML = "";
             if (!p.comentarios || p.comentarios.length === 0) {
-                feed.innerHTML = `<p class="text-gray-500 italic">No hay notas de seguimiento para este cliente.</p>`;
+                feed.innerHTML = `<p class="text-gray-500 italic">No hay notas de seguimiento.</p>`;
                 return;
             }
             p.comentarios.forEach(c => {
@@ -469,7 +464,7 @@
                     <div class="bg-gray-800 p-2 rounded border border-gray-750">
                         <div class="flex justify-between items-center mb-1 text-[10px]">
                             <span class="text-emerald-400 font-bold">${c.user}</span>
-                            <span class="text-gray-500">${c.date || ''}</span>
+                            <span class="text-gray-500">${c.date}</span>
                         </div>
                         <p class="text-gray-300">${c.texto}</p>
                     </div>
@@ -483,12 +478,10 @@
             const id = document.getElementById('comentario-p-id').value;
             const texto = document.getElementById('comentario-texto').value;
             const p = DB.prospectos.find(item => item.id === id);
-            
             if (p) {
                 if(!p.comentarios) p.comentarios = [];
                 const hoy = new Date();
                 const dateStr = `${String(hoy.getDate()).padStart(2, '0')}/${String(hoy.getMonth()+1).padStart(2, '0')}`;
-                
                 p.comentarios.push({ user: currentUser, texto: texto, date: dateStr });
                 saveToLocalStorage('prospectos');
                 document.getElementById('comentario-texto').value = "";
@@ -496,7 +489,6 @@
             }
         }
 
-        // ================= TAREAS OPERATIVAS CON BOTON ELIMINAR =================
         function renderTareas() {
             const contenedor = document.getElementById('lista-tareas');
             contenedor.innerHTML = "";
@@ -506,14 +498,12 @@
                         <div>
                             <div class="flex justify-between items-start mb-2">
                                 <span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded text-xs font-semibold">Para: ${t.miembro}</span>
-                                <span class="text-[10px] text-gray-500 font-mono">De: ${t.user || 'Sist'}</span>
+                                <span class="text-[10px] text-gray-500 font-mono">De: ${t.user}</span>
                             </div>
                             <p class="text-sm text-gray-300 leading-relaxed">${t.desc}</p>
                         </div>
                         <div class="flex justify-end mt-3 border-t border-gray-800 pt-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                            <button onclick="deleteTarea('${t.id}')" class="text-xs text-red-400 hover:text-red-300 flex items-center gap-1 cursor-pointer">
-                                <i data-lucide="check-circle" class="w-3.5 h-3.5"></i> Completar Tarea
-                            </button>
+                            <button onclick="deleteTarea('${t.id}')" class="text-xs text-red-400 hover:text-red-300 flex items-center gap-1 cursor-pointer"><i data-lucide="check-circle" class="w-3.5 h-3.5"></i> Completar</button>
                         </div>
                     </div>
                 `;
@@ -535,10 +525,8 @@
             DB.tareas = DB.tareas.filter(t => t.id !== id);
             saveToLocalStorage('tareas');
             renderTareas();
-            lucide.createIcons();
         }
 
-        // ================= BANCO DE ASSETS CON BOTON ELIMINAR =================
         function renderAssets() {
             const contenedor = document.getElementById('lista-assets');
             contenedor.innerHTML = "";
@@ -558,7 +546,6 @@
                             </div>
                         </a>
                         <div class="flex items-center gap-2">
-                            <a href="${a.url}" target="_blank" class="text-gray-500 hover:text-white"><i data-lucide="external-link" class="w-4 h-4"></i></a>
                             <button onclick="deleteAsset('${a.id}')" class="text-gray-500 hover:text-red-400 p-1 rounded transition cursor-pointer"><i data-lucide="trash" class="w-3.5 h-3.5"></i></button>
                         </div>
                     </div>
@@ -579,19 +566,16 @@
         }
 
         function deleteAsset(id) {
-            if(confirm("¿Eliminar este enlace del banco de assets?")){
+            if(confirm("¿Eliminar asset?")){
                 DB.assets = DB.assets.filter(a => a.id !== id);
                 saveToLocalStorage('assets');
                 renderAssets();
-                lucide.createIcons();
             }
         }
 
-        // ================= CALENDARIO CON BOTON ELIMINAR =================
         function renderEventos() {
             const contenedor = document.getElementById('lista-eventos');
             contenedor.innerHTML = "";
-            // Ordenar por fecha próximamente
             DB.eventos.sort((a,b) => new Date(a.fecha) - new Date(b.fecha));
             DB.eventos.forEach(e => {
                 const fPartes = e.fecha.split('-');
@@ -602,7 +586,7 @@
                             <h3 class="text-sm font-medium text-white">${e.titulo}</h3>
                             <p class="text-xs text-gray-400 font-mono text-emerald-400">${fFormateada} - ${e.hora} hrs</p>
                         </div>
-                        <button onclick="deleteEvento('${e.id}')" class="opacity-0 group-hover:opacity-100 p-1 text-gray-500 hover:text-red-400 rounded transition cursor-pointer" title="Remover evento">
+                        <button onclick="deleteEvento('${e.id}')" class="opacity-0 group-hover:opacity-100 p-1 text-gray-500 hover:text-red-400 transition cursor-pointer">
                             <i data-lucide="calendar-x" class="w-4 h-4"></i>
                         </button>
                     </div>
@@ -622,12 +606,10 @@
             lucide.createIcons();
         }
 
-        // Eliminar evento
         function deleteEvento(id) {
             DB.eventos = DB.eventos.filter(e => e.id !== id);
             saveToLocalStorage('eventos');
             renderEventos();
-            lucide.createIcons();
         }
     </script>
 </body>
