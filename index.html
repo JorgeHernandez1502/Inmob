@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inmob Ops - Sistema Integral</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-100 min-h-screen flex flex-col">
+
+    <nav class="bg-gray-800 border-b border-gray-700 p-4 sticky top-0 z-50">
+        <div class="container mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-2">
+                <i data-lucide="building-2" class="text-emerald-400 w-6 h-6"></i>
+                <h1 class="text-xl font-bold tracking-wider text-emerald-400">INMOB <span class="text-white font-light">OPS</span></h1>
+            </div>
+            
+            <div class="flex flex-wrap gap-2">
+                <button onclick="switchTab('prospectos')" id="btn-prospectos" class="tab-btn active bg-emerald-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition flex items-center gap-2">
+                    <i data-lucide="users" class="w-4 h-4"></i> Prospectos
+                </button>
+                <button onclick="switchTab('tareas')" id="btn-tareas" class="tab-btn bg-gray-700 hover:bg-gray-600 text-gray-300 px-4 py-2 rounded-lg text-sm font-medium transition flex items-center gap-2">
+                    <i data-lucide="check-square" class="w-4 h-4"></i> Tareas
+                </button>
+                <button onclick="switchTab('assets')" id="btn-assets" class="tab-btn bg-gray-700 hover:bg-gray-600 text-gray-300 px-4 py-2 rounded-lg text-sm font-medium transition flex items-center gap-2">
+                    <i data-lucide="folder-open" class="w-4 h-4"></i> Banco de Assets
+                </button>
+                <button onclick="switchTab('calendario')" id="btn-calendario" class="tab-btn bg-gray-700 hover:bg-gray-600 text-gray-300 px-4 py-2 rounded-lg text-sm font-medium transition flex items-center gap-2">
+                    <i data-lucide="calendar" class="w-4 h-4"></i> Calendario
+                </button>
+                <button onclick="switchTab('equipo')" id="btn-equipo" class="tab-btn bg-gray-700 hover:bg-gray-600 text-gray-300 px-4 py-2 rounded-lg text-sm font-medium transition flex items-center gap-2">
+                    <i data-lucide="contact-2" class="w-4 h-4"></i> Miembros
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto flex-1 p-4 md:p-6 max-w-7xl">
+
+        <section id="tab-prospectos" class="tab-content block animate-fadeIn">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="bg-gray-800 p-5 rounded-xl border border-gray-700 h-fit">
+                    <h2 class="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                        <i data-lucide="user-plus" class="text-emerald-400 w-5 h-5"></i> Registrar Prospecto
+                    </h2>
+                    <form id="form-prospecto" class="space-y-4" onsubmit="addProspecto(event)">
+                        <div>
+                            <label class="block text-xs font-medium text-gray-400 mb-1 uppercase">Nombre Completo</label>
+                            <input type="text" id="p-nombre" required class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-emerald-500" placeholder="Ej. Juan Pérez">
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs font-medium text-gray-400 mb-1 uppercase">Teléfono</label>
+                                <input type="tel" id="p-telefono" required class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-emerald-500" placeholder="+52...">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-gray-400 mb-1 uppercase">Presupuesto</label>
+                                <input type="text" id="p-presupuesto" required class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-emerald-500" placeholder="Ej. $150k USD">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-gray-400 mb-1 uppercase">Propiedad de Interés</label>
+                            <input type="text" id="p-interes" required class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-emerald-500" placeholder="Ej. Depa Bosques Int 4">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-gray-400 mb-1 uppercase">Asignar Asesor</label>
+                            <select id="p-asesor" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
+                                <option value="Carlos Mendoza">Carlos Mendoza</option>
+                                <option value="Sofía Rubio">Sofía Rubio</option>
+                                <option value="Andrés Silva">Andrés Silva</option>
+                                <option value="Laura Torres">Laura Torres</option>
+                                <option value="Diego Gómez">Diego Gómez</option>
+                                <option value="Elena Ruiz">Elena Ruiz</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-gray-400 mb-1 uppercase">Etapa Comercial</label>
+                            <select id="p-etapa" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
+                                <option value="Nuevo">Contacto Nuevo 📥</option>
+                                <option value="Calificado">Calificado / Filtro 🔎</option>
+                                <option value="Cita">Cita Programada 📅</option>
+                                <option value="Propuesta">Propuesta Enviada 📄</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-medium py-2.5 px-4 rounded-lg transition flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-emerald-900/20">
+                            <i data-lucide="check" class="w-4 h-4"></i> Guardar en Pipeline
+                        </button>
+                    </form>
+                </div>
+
+                <div class="lg:col-span-2 bg-gray-800 p-5 rounded-xl border border-gray-700 overflow-hidden flex flex-col">
+                    <h2 class="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                        <i data-lucide="list-filter" class="text-emerald-400 w-5 h-5"></i> Pipeline Activo de Clientes
+                    </h2>
+                    <div class="overflow-x-auto rounded-lg border border-gray-700 flex-1">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-gray-900/50 text-gray-400 text-xs font-semibold uppercase border-b border-gray-700">
+                                    <th class="p-3">Prospecto</th>
+                                    <th class="p-3">Interés / Valor</th>
+                                    <th class="p-3">Asesor</th>
+                                    <th class="p-3">Etapa</th>
+                                </tr>
+                            </thead>
+                            <tbody id="lista-prospectos" class="divide-y divide-gray-700 text-sm">
+                                <tr class="hover:bg-gray-750/30">
+                                    <td class="p-3"><div class="font-medium text-white">Alejandro Marín</div><div class="text-xs text-gray-400">+52 55 1234 5678</div></td>
+                                    <td class="p-3"><div class="text-white font-medium">Casa Colinas</div><div class="text-xs text-emerald-400">$310,000 USD</div></td>
+                                    <td class="p-3 text-gray-300">Sofía Rubio</td>
+                                    <td class="p-3"><span class="bg-amber-500/10 text-amber-400 border border-amber-500/20 px-2 py-0.5 rounded text-xs font-medium">Propuesta Enviada</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tab-tareas" class="tab-content hidden animate-fadeIn">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="bg-gray-800 p-5 rounded-xl border border-gray-700 h-fit">
+                    <h2 class="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                        <i data-lucide="sticky-note" class="text-emerald-400 w-5 h-5"></i> Asignar Nota de Tarea
+                    </h2>
+                    <form id="form-tarea" class="space-y-4" onsubmit="addTarea(event)">
+                        <div>
+                            <label class="block text-xs font-medium text-gray-400 mb-1 uppercase">Para el Miembro:</label>
+                            <select id="t-miembro" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
+                                <option value="Carlos Mendoza">Carlos Mendoza</option>
+                                <option value="Sofía Rubio">Sofía Rubio</option>
+                                <option value="Andrés Silva">Andrés Silva</option>
+                                <option value="Laura Torres">Laura Torres</option>
+                                <option value="Diego Gómez">Diego Gómez</option>
+                                <option value="Elena Ruiz">Elena Ruiz</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-gray-400 mb-1 uppercase">Descripción de la Tarea</label>
+                            <textarea id="t-desc" required rows="3" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-emerald-500 resize-none" placeholder="Escribe la nota u orden aquí..."></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-medium py-2.5 px-4 rounded-lg transition flex items-center justify-center gap-2 cursor-pointer">
+                            <i data-lucide="plus-circle" class="w-4 h-4"></i> Dejar Nota
+                        </button>
+                    </form>
+                </div>
+
+                <div class="lg:col-span-2 bg-gray-800 p-5 rounded-xl border border-gray-700">
+                    <h2 class="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                        <i data-lucide="clipboard-list" class="text-emerald-400 w-5 h-5"></i> Pizarrón Operativo de Pendientes
+                    </h2>
+                    <div id="lista-tareas" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-gray-900 p-4 rounded-lg border border-gray-700 relative group">
+                            <div class="flex justify-between items-start mb-2">
+                                <span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded text-xs font-semibold">Para: Sofía Rubio</span>
+                                <span class="text-[11px] text-gray-500">Activa</span>
+                            </div>
+                            <p class="text-sm text-gray-300 leading-relaxed">Llamar urgentemente al prospecto Alejandro para confirmar si el depósito del enganche se hará esta semana.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tab-assets" class="tab-content hidden animate-fadeIn">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="bg-gray-800 p-5 rounded-xl border border-gray-700 h-fit">
+                    <h2 class="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                        <i data-lucide="link-2" class="text-emerald-400 w-5 h-5"></i> Indexar Recurso / Asset
+                    </h2>
+                    <form id="form-asset" class="space-y-4" onsubmit="addAsset(event)">
+                        <div>
+                            <label class="block text-xs font-medium text-gray-400 mb-1 uppercase">Nombre del Recurso</label>
+                            <input type="text" id="a-nombre" required class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-emerald-500" placeholder="Ej. Drive Carpeta de Fotos - Terreno Sur">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-gray-400 mb-1 uppercase">Tipo de Archivo</label>
+                            <select id="a-tipo" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
+                                <option value="folder">Carpeta de Drive / Dropbox 📂</option>
+                                <option value="video">Video de Recorrido / Youtube 🎬</option>
+                                <option value="file">Contrato / Ficha Técnica PDF 📄</option>
+                                <option value="link">Otro Link Externo 🔗</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-gray-400 mb-1 uppercase">URL / Enlace Web</label>
+                            <input type="url" id="a-url" required class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-emerald-500" placeholder="https://drive.google.com/...">
+                        </div>
+                        <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-medium py-2.5 px-4 rounded-lg transition flex items-center justify-center gap-2 cursor-pointer">
+                            <i data-lucide="link" class="w-4 h-4"></i> Añadir Enlace Directo
+                        </button>
+                    </form>
+                </div>
+
+                <div class="lg:col-span-2 bg-gray-800 p-5 rounded-xl border border-gray-700">
+                    <h2 class="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                        <i data-lucide="layers" class="text-emerald-400 w-5 h-5"></i> Hub Central de Material de Ventas
+                    </h2>
+                    <p class="text-xs text-gray-400 mb-4">Haz clic en cualquier asset para abrir la carpeta o archivo directamente en una pestaña nueva.</p>
+                    
+                    <div id="lista-assets" class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <a href="https://drive.google.com" target="_blank" class="bg-gray-900 p-3 rounded-lg border border-gray-700 hover:border-emerald-500/50 hover:bg-gray-850 transition flex items-center justify-between group">
+                            <div class="flex items-center gap-3">
+                                <div class="bg-blue-500/10 p-2 rounded text-blue-400"><i data-lucide="folder" class="w-5 h-5"></i></div>
+                                <div>
+                                    <div class="text-sm font-medium text-white group-hover:text-emerald-400 transition">Carpeta Drive Máster - renders e imágenes</div>
+                                    <div class="text-xs text-gray-500">Carpeta Compartida</div>
+                                </div>
+                            </div>
+                            <i data-lucide="external-link" class="w-4 h-4 text-gray-500 group-hover:text-emerald-400 transition"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tab-calendario" class="tab-content hidden animate-fadeIn">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="bg-gray-800 p-5 rounded-xl border border-gray-700 h-fit">
+                    <h2 class="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                        <i data-lucide="calendar-plus" class="text-emerald-400 w-5 h-5"></i> Agendar Próxima Actividad
+                    </h2>
+                    <form id="form-evento" class="space-y-4" onsubmit="addEvento(event)">
+                        <div>
+                            <label class="block text-xs font-medium text-gray-400 mb-1 uppercase">Título de la Actividad</label>
+                            <input type="text" id="e-titulo" required class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-emerald-500" placeholder="Ej. Firma de Contrato / Recorrido">
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs font-medium text-gray-400 mb-1 uppercase">Fecha</label>
+                                <input type="date" id="e-fecha" required class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-gray-400 mb-1 uppercase">Hora</label>
+                                <input type="time" id="e-hora" required class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
+                            </div>
+                        </div>
+                        <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-medium py-2.5 px-4 rounded-lg transition flex items-center justify-center gap-2 cursor-pointer">
+                            <i data-lucide="clock" class="w-4 h-4"></i> Fijar en Agenda
+                        </button>
+                    </form>
+                </div>
+
+                <div class="lg:col-span-2 bg-gray-800 p-5 rounded-xl border border-gray-700">
+                    <h2 class="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                        <i data-lucide="calendar-days" class="text-emerald-400 w-5 h-5"></i> Cronograma de Eventos Críticos
+                    </h2>
+                    <div id="lista-eventos" class="space-y-3">
+                        <div class="bg-gray-900 p-3 rounded-lg border border-gray-700 border-l-4 border-l-emerald-500 flex justify-between items-center">
+                            <div>
+                                <h3 class="text-sm font-medium text-white">Muestra de Casa Colinas con Alejandro</h3>
+                                <p class="text-xs text-gray-400">Reunión presencial en locación</p>
+                            </div>
+                            <div class="text-right">
+                                <span class="bg-emerald-500/10 text-emerald-400 text-xs px-2 py-1 rounded border border-emerald-500/20 font-mono">15/06 - 16:00 hrs</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tab-equipo" class="tab-content hidden animate-fadeIn">
+            <div class="bg-gray-800 p-6 rounded-xl border border-gray-700">
+                <div class="mb-6">
+                    <h2 class="text-xl font-semibold text-white flex items-center gap-2">
+                        <i data-lucide="shield-check" class="text-emerald-400 w-6 h-6"></i> Perfiles del Equipo y Asesores Activos
+                    </h2>
+                    <p class="text-gray-400 text-sm">Estos perfiles interactúan directamente con la pestaña de asignación de tareas.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div class="bg-gray-900 p-4 rounded-lg border border-gray-700 flex items-center gap-3">
+                        <div class="bg-emerald-500/10 p-3 rounded-full text-emerald-400 font-bold text-sm">CM</div>
+                        <div>
+                            <h3 class="font-medium text-white text-sm">Carlos Mendoza</h3>
+                            <span class="text-xs bg-gray-800 text-gray-400 border border-gray-700 px-2 py-0.5 rounded-full">Asesor Senior</span>
+                        </div>
+                    </div>
+                    <div class="bg-gray-900 p-4 rounded-lg border border-gray-700 flex items-center gap-3">
+                        <div class="bg-emerald-500/10 p-3 rounded-full text-emerald-400 font-bold text-sm">SR</div>
+                        <div>
+                            <h3 class="font-medium text-white text-sm">Sofía Rubio</h3>
+                            <span class="text-xs bg-gray-800 text-gray-400 border border-gray-700 px-2 py-0.5 rounded-full">Asesor Comercial</span>
+                        </div>
+                    </div>
+                    <div class="bg-gray-900 p-4 rounded-lg border border-gray-700 flex items-center gap-3">
+                        <div class="bg-emerald-500/10 p-3 rounded-full text-emerald-400 font-bold text-sm">AS</div>
+                        <div>
+                            <h3 class="font-medium text-white text-sm">Andrés Silva</h3>
+                            <span class="text-xs bg-gray-800 text-gray-400 border border-gray-700 px-2 py-0.5 rounded-full">Cierre de Ventas</span>
+                        </div>
+                    </div>
+                    <div class="bg-gray-900 p-4 rounded-lg border border-gray-700 flex items-center gap-3">
+                        <div class="bg-emerald-500/10 p-3 rounded-full text-emerald-400 font-bold text-sm">LT</div>
+                        <div>
+                            <h3 class="font-medium text-white text-sm">Laura Torres</h3>
+                            <span class="text-xs bg-gray-800 text-gray-400 border border-gray-700 px-2 py-0.5 rounded-full">Marketing Ops</span>
+                        </div>
+                    </div>
+                    <div class="bg-gray-900 p-4 rounded-lg border border-gray-700 flex items-center gap-3">
+                        <div class="bg-emerald-500/10 p-3 rounded-full text-emerald-400 font-bold text-sm">DG</div>
+                        <div>
+                            <h3 class="font-medium text-white text-sm">Diego Gómez</h3>
+                            <span class="text-xs bg-gray-800 text-gray-400 border border-gray-700 px-2 py-0.5 rounded-full">Legal & Contratos</span>
+                        </div>
+                    </div>
+                    <div class="bg-gray-900 p-4 rounded-lg border border-gray-700 flex items-center gap-3">
+                        <div class="bg-emerald-500/10 p-3 rounded-full text-emerald-400 font-bold text-sm">ER</div>
+                        <div>
+                            <h3 class="font-medium text-white text-sm">Elena Ruiz</h3>
+                            <span class="text-xs bg-gray-800 text-gray-400 border border-gray-700 px-2 py-0.5 rounded-full">Atención a Clientes</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-850 p-4 text-center text-xs text-gray-500 border-t border-gray-800">
+        &copy; Inmob Ops - Panel Corporativo Privado. Desarrollado vía GitHub Pages.
+    </footer>
+
+    <script>
+        // 1. Inicializar iconos visuales
+        lucide.createIcons();
+
+        // 2. Sistema de navegación entre pestañas
+        function switchTab(tabId) {
+            // Ocultar todos los contenidos de pestañas
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.add('hidden'));
+            
+            // Quitar estilos activos de todos los botones
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('bg-emerald-600', 'text-white');
+                btn.classList.add('bg-gray-700', 'text-gray-300');
+            });
+
+            // Mostrar la pestaña seleccionada
+            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+            
+            // Activar botón seleccionado
+            const activeBtn = document.getElementById(`btn-${tabId}`);
+            activeBtn.classList.remove('bg-gray-700', 'text-gray-300');
+            activeBtn.classList.add('bg-emerald-600', 'text-white');
+        }
+
+        // 3. Agregar Prospecto de forma dinámica
+        function addProspecto(e) {
+            e.preventDefault();
+            const nombre = document.getElementById('p-nombre').value;
+            const telefono = document.getElementById('p-telefono').value;
+            const presupuesto = document.getElementById('p-presupuesto').value;
+            const interes = document.getElementById('p-interes').value;
+            const asesor = document.getElementById('p-asesor').value;
+            const etapa = document.getElementById('p-etapa').value;
+
+            const tbody = document.getElementById('lista-prospectos');
+            const tr = document.createElement('tr');
+            tr.className = "hover:bg-gray-750/30 border-t border-gray-700";
+            tr.innerHTML = `
+                <td class="p-3"><div class="font-medium text-white">${nombre}</div><div class="text-xs text-gray-400">${telefono}</div></td>
+                <td class="p-3"><div class="text-white font-medium">${interes}</div><div class="text-xs text-emerald-400">${presupuesto}</div></td>
+                <td class="p-3 text-gray-300">${asesor}</td>
+                <td class="p-3"><span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded text-xs font-medium">${etapa} 📌</span></td>
+            `;
+            tbody.appendChild(tr);
+            document.getElementById('form-prospecto').reset();
+        }
+
+        // 4. Agregar Nota de Tarea de forma dinámica
+        function addTarea(e) {
+            e.preventDefault();
+            const miembro = document.getElementById('t-miembro').value;
+            const desc = document.getElementById('t-desc').value;
+
+            const contenedor = document.getElementById('lista-tareas');
+            const div = document.createElement('div');
+            div.className = "bg-gray-900 p-4 rounded-lg border border-gray-700";
+            div.innerHTML = `
+                <div class="flex justify-between items-start mb-2">
+                    <span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded text-xs font-semibold">Para: ${miembro}</span>
+                    <span class="text-[11px] text-gray-500">Nueva</span>
+                </div>
+                <p class="text-sm text-gray-300 leading-relaxed">${desc}</p>
+            `;
+            contenedor.appendChild(div);
+            document.getElementById('form-tarea').reset();
+        }
+
+        // 5. Agregar Assets / Enlaces Rápidos
+        function addAsset(e) {
+            e.preventDefault();
+            const nombre = document.getElementById('a-nombre').value;
+            const tipo = document.getElementById('a-tipo').value;
+            const url = document.getElementById('a-url').value;
+
+            let icon = 'link';
+            let color = 'text-purple-400';
+            let bg = 'bg-purple-500/10';
+            let sub = 'Recurso Enlazado';
+
+            if(tipo === 'folder') { icon = 'folder'; color = 'text-blue-400'; bg = 'bg-blue-500/10'; sub = 'Carpeta de Archivos'; }
+            if(tipo === 'video') { icon = 'video'; color = 'text-red-400'; bg = 'bg-red-500/10'; sub = 'Contenido Multimedia'; }
+            if(tipo === 'file') { icon = 'file-text'; color = 'text-amber-400'; bg = 'bg-amber-500/10'; sub = 'Documento Oficial'; }
+
+            const contenedor = document.getElementById('lista-assets');
+            const a = document.createElement('a');
+            a.href = url;
+            a.target = "_blank";
+            a.className = "bg-gray-900 p-3 rounded-lg border border-gray-700 hover:border-emerald-500/50 hover:bg-gray-850 transition flex items-center justify-between group";
+            a.innerHTML = `
+                <div class="flex items-center gap-3">
+                    <div class="${bg} p-2 rounded ${color}"><i data-lucide="${icon}" class="w-5 h-5"></i></div>
+                    <div>
+                        <div class="text-sm font-medium text-white group-hover:text-emerald-400 transition">${nombre}</div>
+                        <div class="text-xs text-gray-500">${sub}</div>
+                    </div>
+                </div>
+                <i data-lucide="external-link" class="w-4 h-4 text-gray-500 group-hover:text-emerald-400 transition"></i>
+            `;
+            contenedor.appendChild(a);
+            lucide.createIcons(); // Recargar iconos para el nuevo elemento
+            document.getElementById('form-asset').reset();
+        }
+
+        // 6. Agregar Actividades al Calendario
+        function addEvento(e) {
+            e.preventDefault();
+            const titulo = document.getElementById('e-titulo').value;
+            const fecha = document.getElementById('e-fecha').value;
+            const hora = document.getElementById('e-hora').value;
+
+            // Formatear fecha simple
+            const fPartes = fecha.split('-');
+            const fFormateada = fPartes[2] ? `${fPartes[2]}/${fPartes[1]}` : fecha;
+
+            const contenedor = document.getElementById('lista-eventos');
+            const div = document.createElement('div');
+            div.className = "bg-gray-900 p-3 rounded-lg border border-gray-700 border-l-4 border-l-emerald-500 flex justify-between items-center";
+            div.innerHTML = `
+                <div>
+                    <h3 class="text-sm font-medium text-white">${titulo}</h3>
+                    <p class="text-xs text-gray-400">Actividad Agendada</p>
+                </div>
+                <div class="text-right">
+                    <span class="bg-emerald-500/10 text-emerald-400 text-xs px-2 py-1 rounded border border-emerald-500/20 font-mono">${fFormateada} - ${hora} hrs</span>
+                </div>
+            `;
+            contenedor.appendChild(div);
+            document.getElementById('form-evento').reset();
+        }
+    </script>
+</body>
+</html>
