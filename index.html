@@ -13,345 +13,386 @@
 </head>
 <body class="bg-gray-900 text-gray-100 min-h-screen flex flex-col">
 
-    <nav class="bg-gray-800 border-b border-gray-700 p-4 sticky top-0 z-50">
-        <div class="container mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-            <div class="flex items-center gap-2">
-                <i data-lucide="building-2" class="text-emerald-400 w-6 h-6"></i>
-                <h1 class="text-xl font-bold tracking-wider text-emerald-400">INMOB <span class="text-white font-light">OPS</span></h1>
+    <div id="login-screen" class="fixed inset-0 bg-gray-950 flex items-center justify-center z-999 animate-fadeIn">
+        <div class="bg-gray-800 p-8 rounded-2xl border border-gray-700 max-w-md w-full shadow-2xl text-center">
+            <div class="flex justify-center mb-3">
+                <div class="bg-emerald-500/10 p-3 rounded-full text-emerald-400">
+                    <i data-lucide="building-2" class="w-10 h-10"></i>
+                </div>
             </div>
+            <h2 class="text-2xl font-bold text-white mb-1">INMOB OPS</h2>
+            <p class="text-gray-400 text-sm mb-6">Selecciona tu perfil de asesor para ingresar al sistema</p>
             
-            <div class="flex flex-wrap gap-2">
-                <button onclick="switchTab('prospectos')" id="btn-prospectos" class="tab-btn active bg-emerald-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition flex items-center gap-2">
-                    <i data-lucide="users" class="w-4 h-4"></i> Prospectos
+            <div class="space-y-3">
+                <button onclick="loginAs('Carlos Mendoza')" class="w-full bg-gray-900 hover:bg-gray-750 p-3 rounded-xl border border-gray-700 hover:border-emerald-500 text-left flex items-center gap-3 transition">
+                    <div class="bg-emerald-500/20 text-emerald-400 px-2.5 py-1 rounded-lg font-bold text-xs">CM</div>
+                    <span class="text-sm font-medium text-white">Carlos Mendoza (Asesor Senior)</span>
                 </button>
-                <button onclick="switchTab('tareas')" id="btn-tareas" class="tab-btn bg-gray-700 hover:bg-gray-600 text-gray-300 px-4 py-2 rounded-lg text-sm font-medium transition flex items-center gap-2">
-                    <i data-lucide="check-square" class="w-4 h-4"></i> Tareas
+                <button onclick="loginAs('Sofía Rubio')" class="w-full bg-gray-900 hover:bg-gray-750 p-3 rounded-xl border border-gray-700 hover:border-emerald-500 text-left flex items-center gap-3 transition">
+                    <div class="bg-emerald-500/20 text-emerald-400 px-2.5 py-1 rounded-lg font-bold text-xs">SR</div>
+                    <span class="text-sm font-medium text-white">Sofía Rubio (Asesor Comercial)</span>
                 </button>
-                <button onclick="switchTab('assets')" id="btn-assets" class="tab-btn bg-gray-700 hover:bg-gray-600 text-gray-300 px-4 py-2 rounded-lg text-sm font-medium transition flex items-center gap-2">
-                    <i data-lucide="folder-open" class="w-4 h-4"></i> Banco de Assets
+                <button onclick="loginAs('Andrés Silva')" class="w-full bg-gray-900 hover:bg-gray-750 p-3 rounded-xl border border-gray-700 hover:border-emerald-500 text-left flex items-center gap-3 transition">
+                    <div class="bg-emerald-500/20 text-emerald-400 px-2.5 py-1 rounded-lg font-bold text-xs">AS</div>
+                    <span class="text-sm font-medium text-white">Andrés Silva (Cierre de Ventas)</span>
                 </button>
-                <button onclick="switchTab('calendario')" id="btn-calendario" class="tab-btn bg-gray-700 hover:bg-gray-600 text-gray-300 px-4 py-2 rounded-lg text-sm font-medium transition flex items-center gap-2">
-                    <i data-lucide="calendar" class="w-4 h-4"></i> Calendario
+                <button onclick="loginAs('Laura Torres')" class="w-full bg-gray-900 hover:bg-gray-750 p-3 rounded-xl border border-gray-700 hover:border-emerald-500 text-left flex items-center gap-3 transition">
+                    <div class="bg-emerald-500/20 text-emerald-400 px-2.5 py-1 rounded-lg font-bold text-xs">LT</div>
+                    <span class="text-sm font-medium text-white">Laura Torres (Marketing Ops)</span>
                 </button>
-                <button onclick="switchTab('equipo')" id="btn-equipo" class="tab-btn bg-gray-700 hover:bg-gray-600 text-gray-300 px-4 py-2 rounded-lg text-sm font-medium transition flex items-center gap-2">
-                    <i data-lucide="contact-2" class="w-4 h-4"></i> Miembros
+                <button onclick="loginAs('Diego Gómez')" class="w-full bg-gray-900 hover:bg-gray-750 p-3 rounded-xl border border-gray-700 hover:border-emerald-500 text-left flex items-center gap-3 transition">
+                    <div class="bg-emerald-500/20 text-emerald-400 px-2.5 py-1 rounded-lg font-bold text-xs">DG</div>
+                    <span class="text-sm font-medium text-white">Diego Gómez (Legal & Contratos)</span>
+                </button>
+                <button onclick="loginAs('Elena Ruiz')" class="w-full bg-gray-900 hover:bg-gray-750 p-3 rounded-xl border border-gray-700 hover:border-emerald-500 text-left flex items-center gap-3 transition">
+                    <div class="bg-emerald-500/20 text-emerald-400 px-2.5 py-1 rounded-lg font-bold text-xs">ER</div>
+                    <span class="text-sm font-medium text-white">Elena Ruiz (Atención a Clientes)</span>
                 </button>
             </div>
         </div>
-    </nav>
+    </div>
 
-    <main class="container mx-auto flex-1 p-4 md:p-6 max-w-7xl">
-
-        <section id="tab-prospectos" class="tab-content block animate-fadeIn">
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div class="bg-gray-800 p-5 rounded-xl border border-gray-700 h-fit">
-                    <h2 class="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-                        <i data-lucide="user-plus" class="text-emerald-400 w-5 h-5"></i> Registrar Prospecto
-                    </h2>
-                    <form id="form-prospecto" class="space-y-4" onsubmit="addProspecto(event)">
-                        <div>
-                            <label class="block text-xs font-medium text-gray-400 mb-1 uppercase">Nombre Completo</label>
-                            <input type="text" id="p-nombre" required class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-emerald-500" placeholder="Ej. Juan Pérez">
-                        </div>
-                        <div class="grid grid-cols-2 gap-3">
-                            <div>
-                                <label class="block text-xs font-medium text-gray-400 mb-1 uppercase">Teléfono</label>
-                                <input type="tel" id="p-telefono" required class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-emerald-500" placeholder="+52...">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-medium text-gray-400 mb-1 uppercase">Presupuesto</label>
-                                <input type="text" id="p-presupuesto" required class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-emerald-500" placeholder="Ej. $150k USD">
-                            </div>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-medium text-gray-400 mb-1 uppercase">Propiedad de Interés</label>
-                            <input type="text" id="p-interes" required class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-emerald-500" placeholder="Ej. Depa Bosques Int 4">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-medium text-gray-400 mb-1 uppercase">Asignar Asesor</label>
-                            <select id="p-asesor" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
-                                <option value="Carlos Mendoza">Carlos Mendoza</option>
-                                <option value="Sofía Rubio">Sofía Rubio</option>
-                                <option value="Andrés Silva">Andrés Silva</option>
-                                <option value="Laura Torres">Laura Torres</option>
-                                <option value="Diego Gómez">Diego Gómez</option>
-                                <option value="Elena Ruiz">Elena Ruiz</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-medium text-gray-400 mb-1 uppercase">Etapa Comercial</label>
-                            <select id="p-etapa" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
-                                <option value="Nuevo">Contacto Nuevo 📥</option>
-                                <option value="Calificado">Calificado / Filtro 🔎</option>
-                                <option value="Cita">Cita Programada 📅</option>
-                                <option value="Propuesta">Propuesta Enviada 📄</option>
-                            </select>
-                        </div>
-                        <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-medium py-2.5 px-4 rounded-lg transition flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-emerald-900/20">
-                            <i data-lucide="check" class="w-4 h-4"></i> Guardar en Pipeline
-                        </button>
-                    </form>
-                </div>
-
-                <div class="lg:col-span-2 bg-gray-800 p-5 rounded-xl border border-gray-700 overflow-hidden flex flex-col">
-                    <h2 class="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-                        <i data-lucide="list-filter" class="text-emerald-400 w-5 h-5"></i> Pipeline Activo de Clientes
-                    </h2>
-                    <div class="overflow-x-auto rounded-lg border border-gray-700 flex-1">
-                        <table class="w-full text-left border-collapse">
-                            <thead>
-                                <tr class="bg-gray-900/50 text-gray-400 text-xs font-semibold uppercase border-b border-gray-700">
-                                    <th class="p-3">Prospecto</th>
-                                    <th class="p-3">Interés / Valor</th>
-                                    <th class="p-3">Asesor</th>
-                                    <th class="p-3">Etapa</th>
-                                </tr>
-                            </thead>
-                            <tbody id="lista-prospectos" class="divide-y divide-gray-700 text-sm">
-                                <tr class="hover:bg-gray-750/30">
-                                    <td class="p-3"><div class="font-medium text-white">Alejandro Marín</div><div class="text-xs text-gray-400">+52 55 1234 5678</div></td>
-                                    <td class="p-3"><div class="text-white font-medium">Casa Colinas</div><div class="text-xs text-emerald-400">$310,000 USD</div></td>
-                                    <td class="p-3 text-gray-300">Sofía Rubio</td>
-                                    <td class="p-3"><span class="bg-amber-500/10 text-amber-400 border border-amber-500/20 px-2 py-0.5 rounded text-xs font-medium">Propuesta Enviada</span></td>
-                                </tr>
-                            </tbody>
-                        </table>
+    <div id="app-content" class="hidden flex-col min-h-screen">
+        <nav class="bg-gray-800 border-b border-gray-700 p-4 sticky top-0 z-50">
+            <div class="container mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+                <div class="flex items-center gap-4">
+                    <div class="flex items-center gap-2">
+                        <i data-lucide="building-2" class="text-emerald-400 w-6 h-6"></i>
+                        <h1 class="text-xl font-bold tracking-wider text-emerald-400">INMOB <span class="text-white font-light">OPS</span></h1>
+                    </div>
+                    <div class="bg-gray-900 border border-gray-700 rounded-lg px-3 py-1.5 flex items-center gap-2 text-xs text-gray-300">
+                        <i data-lucide="user" class="w-3.5 h-3.5 text-emerald-400"></i>
+                        <span>Usuario: <strong id="session-user" class="text-white">Asesor</strong></span>
+                        <button onclick="logout()" class="text-red-400 hover:text-red-300 ml-2 font-medium cursor-pointer">Salir</button>
                     </div>
                 </div>
-            </div>
-        </section>
-
-        <section id="tab-tareas" class="tab-content hidden animate-fadeIn">
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div class="bg-gray-800 p-5 rounded-xl border border-gray-700 h-fit">
-                    <h2 class="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-                        <i data-lucide="sticky-note" class="text-emerald-400 w-5 h-5"></i> Asignar Nota de Tarea
-                    </h2>
-                    <form id="form-tarea" class="space-y-4" onsubmit="addTarea(event)">
-                        <div>
-                            <label class="block text-xs font-medium text-gray-400 mb-1 uppercase">Para el Miembro:</label>
-                            <select id="t-miembro" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
-                                <option value="Carlos Mendoza">Carlos Mendoza</option>
-                                <option value="Sofía Rubio">Sofía Rubio</option>
-                                <option value="Andrés Silva">Andrés Silva</option>
-                                <option value="Laura Torres">Laura Torres</option>
-                                <option value="Diego Gómez">Diego Gómez</option>
-                                <option value="Elena Ruiz">Elena Ruiz</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-medium text-gray-400 mb-1 uppercase">Descripción de la Tarea</label>
-                            <textarea id="t-desc" required rows="3" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-emerald-500 resize-none" placeholder="Escribe la nota u orden aquí..."></textarea>
-                        </div>
-                        <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-medium py-2.5 px-4 rounded-lg transition flex items-center justify-center gap-2 cursor-pointer">
-                            <i data-lucide="plus-circle" class="w-4 h-4"></i> Dejar Nota
-                        </button>
-                    </form>
+                
+                <div class="flex flex-wrap gap-2">
+                    <button onclick="switchTab('prospectos')" id="btn-prospectos" class="tab-btn active bg-emerald-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition flex items-center gap-2 cursor-pointer">
+                        <i data-lucide="users" class="w-4 h-4"></i> Prospectos
+                    </button>
+                    <button onclick="switchTab('tareas')" id="btn-tareas" class="tab-btn bg-gray-700 hover:bg-gray-600 text-gray-300 px-4 py-2 rounded-lg text-sm font-medium transition flex items-center gap-2 cursor-pointer">
+                        <i data-lucide="check-square" class="w-4 h-4"></i> Tareas
+                    </button>
+                    <button onclick="switchTab('assets')" id="btn-assets" class="tab-btn bg-gray-700 hover:bg-gray-600 text-gray-300 px-4 py-2 rounded-lg text-sm font-medium transition flex items-center gap-2 cursor-pointer">
+                        <i data-lucide="folder-open" class="w-4 h-4"></i> Banco de Assets
+                    </button>
+                    <button onclick="switchTab('calendario')" id="btn-calendario" class="tab-btn bg-gray-700 hover:bg-gray-600 text-gray-300 px-4 py-2 rounded-lg text-sm font-medium transition flex items-center gap-2 cursor-pointer">
+                        <i data-lucide="calendar" class="w-4 h-4"></i> Calendario
+                    </button>
                 </div>
+            </div>
+        </nav>
 
-                <div class="lg:col-span-2 bg-gray-800 p-5 rounded-xl border border-gray-700">
-                    <h2 class="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-                        <i data-lucide="clipboard-list" class="text-emerald-400 w-5 h-5"></i> Pizarrón Operativo de Pendientes
-                    </h2>
-                    <div id="lista-tareas" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="bg-gray-900 p-4 rounded-lg border border-gray-700 relative group">
-                            <div class="flex justify-between items-start mb-2">
-                                <span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded text-xs font-semibold">Para: Sofía Rubio</span>
-                                <span class="text-[11px] text-gray-500">Activa</span>
+        <main class="container mx-auto flex-1 p-4 md:p-6 max-w-7xl">
+
+            <section id="tab-prospectos" class="tab-content block animate-fadeIn">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="bg-gray-800 p-5 rounded-xl border border-gray-700 h-fit">
+                        <h2 id="form-prospecto-title" class="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                            <i data-lucide="user-plus" class="text-emerald-400 w-5 h-5"></i> Registrar Prospecto
+                        </h2>
+                        <form id="form-prospecto" class="space-y-4" onsubmit="saveProspecto(event)">
+                            <input type="hidden" id="p-id">
+                            <div>
+                                <label class="block text-xs font-medium text-gray-400 mb-1 uppercase">Nombre Completo</label>
+                                <input type="text" id="p-nombre" required class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-emerald-500" placeholder="Ej. Juan Pérez">
                             </div>
-                            <p class="text-sm text-gray-300 leading-relaxed">Llamar urgentemente al prospecto Alejandro para confirmar si el depósito del enganche se hará esta semana.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="tab-assets" class="tab-content hidden animate-fadeIn">
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div class="bg-gray-800 p-5 rounded-xl border border-gray-700 h-fit">
-                    <h2 class="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-                        <i data-lucide="link-2" class="text-emerald-400 w-5 h-5"></i> Indexar Recurso / Asset
-                    </h2>
-                    <form id="form-asset" class="space-y-4" onsubmit="addAsset(event)">
-                        <div>
-                            <label class="block text-xs font-medium text-gray-400 mb-1 uppercase">Nombre del Recurso</label>
-                            <input type="text" id="a-nombre" required class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-emerald-500" placeholder="Ej. Drive Carpeta de Fotos - Terreno Sur">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-medium text-gray-400 mb-1 uppercase">Tipo de Archivo</label>
-                            <select id="a-tipo" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
-                                <option value="folder">Carpeta de Drive / Dropbox 📂</option>
-                                <option value="video">Video de Recorrido / Youtube 🎬</option>
-                                <option value="file">Contrato / Ficha Técnica PDF 📄</option>
-                                <option value="link">Otro Link Externo 🔗</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-medium text-gray-400 mb-1 uppercase">URL / Enlace Web</label>
-                            <input type="url" id="a-url" required class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-emerald-500" placeholder="https://drive.google.com/...">
-                        </div>
-                        <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-medium py-2.5 px-4 rounded-lg transition flex items-center justify-center gap-2 cursor-pointer">
-                            <i data-lucide="link" class="w-4 h-4"></i> Añadir Enlace Directo
-                        </button>
-                    </form>
-                </div>
-
-                <div class="lg:col-span-2 bg-gray-800 p-5 rounded-xl border border-gray-700">
-                    <h2 class="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-                        <i data-lucide="layers" class="text-emerald-400 w-5 h-5"></i> Hub Central de Material de Ventas
-                    </h2>
-                    <p class="text-xs text-gray-400 mb-4">Haz clic en cualquier asset para abrir la carpeta o archivo directamente en una pestaña nueva.</p>
-                    
-                    <div id="lista-assets" class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                        <a href="https://drive.google.com" target="_blank" class="bg-gray-900 p-3 rounded-lg border border-gray-700 hover:border-emerald-500/50 hover:bg-gray-850 transition flex items-center justify-between group">
-                            <div class="flex items-center gap-3">
-                                <div class="bg-blue-500/10 p-2 rounded text-blue-400"><i data-lucide="folder" class="w-5 h-5"></i></div>
+                            <div class="grid grid-cols-2 gap-3">
                                 <div>
-                                    <div class="text-sm font-medium text-white group-hover:text-emerald-400 transition">Carpeta Drive Máster - renders e imágenes</div>
-                                    <div class="text-xs text-gray-500">Carpeta Compartida</div>
+                                    <label class="block text-xs font-medium text-gray-400 mb-1 uppercase">Teléfono</label>
+                                    <input type="tel" id="p-telefono" required class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-emerald-500" placeholder="+52...">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-medium text-gray-400 mb-1 uppercase">Presupuesto</label>
+                                    <input type="text" id="p-presupuesto" required class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-emerald-500" placeholder="Ej. $150k USD">
                                 </div>
                             </div>
-                            <i data-lucide="external-link" class="w-4 h-4 text-gray-500 group-hover:text-emerald-400 transition"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="tab-calendario" class="tab-content hidden animate-fadeIn">
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div class="bg-gray-800 p-5 rounded-xl border border-gray-700 h-fit">
-                    <h2 class="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-                        <i data-lucide="calendar-plus" class="text-emerald-400 w-5 h-5"></i> Agendar Próxima Actividad
-                    </h2>
-                    <form id="form-evento" class="space-y-4" onsubmit="addEvento(event)">
-                        <div>
-                            <label class="block text-xs font-medium text-gray-400 mb-1 uppercase">Título de la Actividad</label>
-                            <input type="text" id="e-titulo" required class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-emerald-500" placeholder="Ej. Firma de Contrato / Recorrido">
-                        </div>
-                        <div class="grid grid-cols-2 gap-3">
                             <div>
-                                <label class="block text-xs font-medium text-gray-400 mb-1 uppercase">Fecha</label>
-                                <input type="date" id="e-fecha" required class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
+                                <label class="block text-xs font-medium text-gray-400 mb-1 uppercase">Propiedad de Interés</label>
+                                <input type="text" id="p-interes" required class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-emerald-500" placeholder="Ej. Depa Bosques Int 4">
                             </div>
                             <div>
-                                <label class="block text-xs font-medium text-gray-400 mb-1 uppercase">Hora</label>
-                                <input type="time" id="e-hora" required class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
+                                <label class="block text-xs font-medium text-gray-400 mb-1 uppercase">Asignar Asesor</label>
+                                <select id="p-asesor" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-emerald-500"></select>
                             </div>
-                        </div>
-                        <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-medium py-2.5 px-4 rounded-lg transition flex items-center justify-center gap-2 cursor-pointer">
-                            <i data-lucide="clock" class="w-4 h-4"></i> Fijar en Agenda
-                        </button>
-                    </form>
-                </div>
-
-                <div class="lg:col-span-2 bg-gray-800 p-5 rounded-xl border border-gray-700">
-                    <h2 class="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-                        <i data-lucide="calendar-days" class="text-emerald-400 w-5 h-5"></i> Cronograma de Eventos Críticos
-                    </h2>
-                    <div id="lista-eventos" class="space-y-3">
-                        <div class="bg-gray-900 p-3 rounded-lg border border-gray-700 border-l-4 border-l-emerald-500 flex justify-between items-center">
                             <div>
-                                <h3 class="text-sm font-medium text-white">Muestra de Casa Colinas con Alejandro</h3>
-                                <p class="text-xs text-gray-400">Reunión presencial en locación</p>
+                                <label class="block text-xs font-medium text-gray-400 mb-1 uppercase">Etapa Comercial</label>
+                                <select id="p-etapa" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
+                                    <option value="Contacto Nuevo 📥">Contacto Nuevo 📥</option>
+                                    <option value="Calificado / Filtro 🔎">Calificado / Filtro 🔎</option>
+                                    <option value="Cita Programada 📅">Cita Programada 📅</option>
+                                    <option value="Propuesta Enviada 📄">Propuesta Enviada 📄</option>
+                                    <option value="Venta Ganada ✅">Venta Ganada ✅</option>
+                                </select>
                             </div>
-                            <div class="text-right">
-                                <span class="bg-emerald-500/10 text-emerald-400 text-xs px-2 py-1 rounded border border-emerald-500/20 font-mono">15/06 - 16:00 hrs</span>
+                            <div class="flex gap-2">
+                                <button type="button" id="btn-cancel-edit" onclick="resetProspectoForm()" class="hidden w-1/3 bg-gray-700 hover:bg-gray-600 text-gray-300 text-sm font-medium py-2.5 px-4 rounded-lg transition cursor-pointer">
+                                    Cancelar
+                                </button>
+                                <button type="submit" class="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-medium py-2.5 px-4 rounded-lg transition flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-emerald-900/20">
+                                    <i data-lucide="check" class="w-4 h-4"></i> <span id="btn-submit-text">Guardar Prospecto</span>
+                                </button>
                             </div>
+                        </form>
+                    </div>
+
+                    <div class="lg:col-span-2 bg-gray-800 p-5 rounded-xl border border-gray-700 overflow-hidden flex flex-col">
+                        <h2 class="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                            <i data-lucide="list-filter" class="text-emerald-400 w-5 h-5"></i> Pipeline Activo de Clientes
+                        </h2>
+                        <div class="overflow-x-auto rounded-lg border border-gray-700 mb-6">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="bg-gray-900/50 text-gray-400 text-xs font-semibold uppercase border-b border-gray-700">
+                                        <th class="p-3">Prospecto</th>
+                                        <th class="p-3">Interés / Valor</th>
+                                        <th class="p-3">Asesor</th>
+                                        <th class="p-3">Etapa</th>
+                                        <th class="p-3 text-right">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="lista-prospectos" class="divide-y divide-gray-700 text-sm"></tbody>
+                            </table>
+                        </div>
+
+                        <div id="comentarios-box" class="hidden bg-gray-900 border border-gray-700 p-4 rounded-lg mt-auto">
+                            <div class="flex justify-between items-center mb-3">
+                                <h3 class="text-sm font-semibold text-white flex items-center gap-2">
+                                    <i data-lucide="message-square" class="text-emerald-400 w-4 h-4"></i> Historial de Notas: <span id="comentario-prospecto-nombre" class="text-emerald-400"></span>
+                                </h3>
+                                <button onclick="closeComentarios()" class="text-gray-400 hover:text-white text-xs">Cerrar</button>
+                            </div>
+                            <div id="feed-comentarios" class="space-y-2 max-h-40 overflow-y-auto mb-3 text-xs pr-1"></div>
+                            <form onsubmit="addComentario(event)" class="flex gap-2">
+                                <input type="hidden" id="comentario-p-id">
+                                <input type="text" id="comentario-texto" required class="flex-1 bg-gray-800 border border-gray-700 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-emerald-500" placeholder="Escribe un comentario o actualización de bitácora...">
+                                <button type="submit" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs px-4 py-2 rounded-lg font-medium transition cursor-pointer">Comentar</button>
+                            </form>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <section id="tab-equipo" class="tab-content hidden animate-fadeIn">
-            <div class="bg-gray-800 p-6 rounded-xl border border-gray-700">
-                <div class="mb-6">
-                    <h2 class="text-xl font-semibold text-white flex items-center gap-2">
-                        <i data-lucide="shield-check" class="text-emerald-400 w-6 h-6"></i> Perfiles del Equipo y Asesores Activos
-                    </h2>
-                    <p class="text-gray-400 text-sm">Estos perfiles interactúan directamente con la pestaña de asignación de tareas.</p>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <div class="bg-gray-900 p-4 rounded-lg border border-gray-700 flex items-center gap-3">
-                        <div class="bg-emerald-500/10 p-3 rounded-full text-emerald-400 font-bold text-sm">CM</div>
-                        <div>
-                            <h3 class="font-medium text-white text-sm">Carlos Mendoza</h3>
-                            <span class="text-xs bg-gray-800 text-gray-400 border border-gray-700 px-2 py-0.5 rounded-full">Asesor Senior</span>
-                        </div>
+            <section id="tab-tareas" class="tab-content hidden animate-fadeIn">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="bg-gray-800 p-5 rounded-xl border border-gray-700 h-fit">
+                        <h2 class="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                            <i data-lucide="sticky-note" class="text-emerald-400 w-5 h-5"></i> Asignar Nota de Tarea
+                        </h2>
+                        <form id="form-tarea" class="space-y-4" onsubmit="saveTarea(event)">
+                            <div>
+                                <label class="block text-xs font-medium text-gray-400 mb-1 uppercase">Para el Miembro:</label>
+                                <select id="t-miembro" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-emerald-500"></select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-gray-400 mb-1 uppercase">Descripción de la Tarea</label>
+                                <textarea id="t-desc" required rows="3" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-emerald-500 resize-none" placeholder="Escribe la nota u orden aquí..."></textarea>
+                            </div>
+                            <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-medium py-2.5 px-4 rounded-lg transition flex items-center justify-center gap-2 cursor-pointer">
+                                <i data-lucide="plus-circle" class="w-4 h-4"></i> Dejar Nota
+                            </button>
+                        </form>
                     </div>
-                    <div class="bg-gray-900 p-4 rounded-lg border border-gray-700 flex items-center gap-3">
-                        <div class="bg-emerald-500/10 p-3 rounded-full text-emerald-400 font-bold text-sm">SR</div>
-                        <div>
-                            <h3 class="font-medium text-white text-sm">Sofía Rubio</h3>
-                            <span class="text-xs bg-gray-800 text-gray-400 border border-gray-700 px-2 py-0.5 rounded-full">Asesor Comercial</span>
-                        </div>
-                    </div>
-                    <div class="bg-gray-900 p-4 rounded-lg border border-gray-700 flex items-center gap-3">
-                        <div class="bg-emerald-500/10 p-3 rounded-full text-emerald-400 font-bold text-sm">AS</div>
-                        <div>
-                            <h3 class="font-medium text-white text-sm">Andrés Silva</h3>
-                            <span class="text-xs bg-gray-800 text-gray-400 border border-gray-700 px-2 py-0.5 rounded-full">Cierre de Ventas</span>
-                        </div>
-                    </div>
-                    <div class="bg-gray-900 p-4 rounded-lg border border-gray-700 flex items-center gap-3">
-                        <div class="bg-emerald-500/10 p-3 rounded-full text-emerald-400 font-bold text-sm">LT</div>
-                        <div>
-                            <h3 class="font-medium text-white text-sm">Laura Torres</h3>
-                            <span class="text-xs bg-gray-800 text-gray-400 border border-gray-700 px-2 py-0.5 rounded-full">Marketing Ops</span>
-                        </div>
-                    </div>
-                    <div class="bg-gray-900 p-4 rounded-lg border border-gray-700 flex items-center gap-3">
-                        <div class="bg-emerald-500/10 p-3 rounded-full text-emerald-400 font-bold text-sm">DG</div>
-                        <div>
-                            <h3 class="font-medium text-white text-sm">Diego Gómez</h3>
-                            <span class="text-xs bg-gray-800 text-gray-400 border border-gray-700 px-2 py-0.5 rounded-full">Legal & Contratos</span>
-                        </div>
-                    </div>
-                    <div class="bg-gray-900 p-4 rounded-lg border border-gray-700 flex items-center gap-3">
-                        <div class="bg-emerald-500/10 p-3 rounded-full text-emerald-400 font-bold text-sm">ER</div>
-                        <div>
-                            <h3 class="font-medium text-white text-sm">Elena Ruiz</h3>
-                            <span class="text-xs bg-gray-800 text-gray-400 border border-gray-700 px-2 py-0.5 rounded-full">Atención a Clientes</span>
-                        </div>
+                    <div class="lg:col-span-2 bg-gray-800 p-5 rounded-xl border border-gray-700">
+                        <h2 class="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                            <i data-lucide="clipboard-list" class="text-emerald-400 w-5 h-5"></i> Pizarrón Operativo de Pendientes
+                        </h2>
+                        <div id="lista-tareas" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
                     </div>
                 </div>
-            </div>
-        </section>
-    </main>
+            </section>
 
-    <footer class="bg-gray-850 p-4 text-center text-xs text-gray-500 border-t border-gray-800">
-        &copy; Inmob Ops - Panel Corporativo Privado. Desarrollado vía GitHub Pages.
-    </footer>
+            <section id="tab-assets" class="tab-content hidden animate-fadeIn">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="bg-gray-800 p-5 rounded-xl border border-gray-700 h-fit">
+                        <h2 class="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                            <i data-lucide="link-2" class="text-emerald-400 w-5 h-5"></i> Indexar Recurso / Asset
+                        </h2>
+                        <form id="form-asset" class="space-y-4" onsubmit="saveAsset(event)">
+                            <div>
+                                <label class="block text-xs font-medium text-gray-400 mb-1 uppercase">Nombre del Recurso</label>
+                                <input type="text" id="a-nombre" required class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-emerald-500" placeholder="Ej. Drive Carpeta de Fotos - Terreno Sur">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-gray-400 mb-1 uppercase">Tipo de Archivo</label>
+                                <select id="a-tipo" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
+                                    <option value="folder">Carpeta de Drive / Dropbox 📂</option>
+                                    <option value="video">Video de Recorrido / Youtube 🎬</option>
+                                    <option value="file">Contrato / Ficha Técnica PDF 📄</option>
+                                    <option value="link">Otro Link Externo 🔗</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-gray-400 mb-1 uppercase">URL / Enlace Web</label>
+                                <input type="url" id="a-url" required class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-emerald-500" placeholder="https://drive.google.com/...">
+                            </div>
+                            <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-medium py-2.5 px-4 rounded-lg transition flex items-center justify-center gap-2 cursor-pointer">
+                                <i data-lucide="link" class="w-4 h-4"></i> Añadir Enlace Directo
+                            </button>
+                        </form>
+                    </div>
+                    <div class="lg:col-span-2 bg-gray-800 p-5 rounded-xl border border-gray-700">
+                        <h2 class="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                            <i data-lucide="layers" class="text-emerald-400 w-5 h-5"></i> Hub Central de Material de Ventas
+                        </h2>
+                        <div id="lista-assets" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="tab-calendario" class="tab-content hidden animate-fadeIn">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="bg-gray-800 p-5 rounded-xl border border-gray-700 h-fit">
+                        <h2 class="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                            <i data-lucide="calendar-plus" class="text-emerald-400 w-5 h-5"></i> Agendar Próxima Actividad
+                        </h2>
+                        <form id="form-evento" class="space-y-4" onsubmit="saveEvento(event)">
+                            <div>
+                                <label class="block text-xs font-medium text-gray-400 mb-1 uppercase">Título de la Actividad</label>
+                                <input type="text" id="e-titulo" required class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-emerald-500" placeholder="Ej. Firma de Contrato / Recorrido">
+                            </div>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block text-xs font-medium text-gray-400 mb-1 uppercase">Fecha</label>
+                                    <input type="date" id="e-fecha" required class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-medium text-gray-400 mb-1 uppercase">Hora</label>
+                                    <input type="time" id="e-hora" required class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
+                                </div>
+                            </div>
+                            <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-medium py-2.5 px-4 rounded-lg transition flex items-center justify-center gap-2 cursor-pointer">
+                                <i data-lucide="clock" class="w-4 h-4"></i> Fijar en Agenda
+                            </button>
+                        </form>
+                    </div>
+                    <div class="lg:col-span-2 bg-gray-800 p-5 rounded-xl border border-gray-700">
+                        <h2 class="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                            <i data-lucide="calendar-days" class="text-emerald-400 w-5 h-5"></i> Cronograma de Eventos Críticos
+                        </h2>
+                        <div id="lista-eventos" class="space-y-3"></div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="bg-gray-850 p-4 text-center text-xs text-gray-500 border-t border-gray-800">
+            &copy; Inmob Ops - Panel Corporativo con Almacenamiento Local.
+        </footer>
+    </div>
 
     <script>
-        // 1. Inicializar iconos visuales
-        lucide.createIcons();
+        // Arreglo maestro de los 6 miembros del equipo
+        const MIEMBROS = ["Carlos Mendoza", "Sofía Rubio", "Andrés Silva", "Laura Torres", "Diego Gómez", "Elena Ruiz"];
+        let currentUser = "";
 
-        // 2. Sistema de navegación entre pestañas
-        function switchTab(tabId) {
-            // Ocultar todos los contenidos de pestañas
-            document.querySelectorAll('.tab-content').forEach(content => content.classList.add('hidden'));
-            
-            // Quitar estilos activos de todos los botones
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.classList.remove('bg-emerald-600', 'text-white');
-                btn.classList.add('bg-gray-700', 'text-gray-300');
+        // Bases de datos locales inteligentes (Cargan de LocalStorage o inician vacías)
+        let DB = {
+            prospectos: JSON.parse(localStorage.getItem('inmob_prospectos')) || [
+                { id: "1", nombre: "Alejandro Marín", telefono: "+52 55 1234 5678", presupuesto: "$310,000 USD", interes: "Casa Colinas", asesor: "Sofía Rubio", etapa: "Propuesta Enviada 📄", comentarios: [{ user: "Sofía Rubio", texto: "Le encantó la vista de la recámara principal. Pendiente confirmar enganche.", date: "12/06" }] }
+            ],
+            tareas: JSON.parse(localStorage.getItem('inmob_tareas')) || [
+                { id: "1", miembro: "Sofía Rubio", desc: "Llamar urgentemente al prospecto Alejandro para confirmar si el depósito se hará esta semana.", user: "Carlos Mendoza" }
+            ],
+            assets: JSON.parse(localStorage.getItem('inmob_assets')) || [
+                { id: "1", nombre: "Carpeta Drive Máster - renders e imágenes", tipo: "folder", url: "https://drive.google.com" }
+            ],
+            eventos: JSON.parse(localStorage.getItem('inmob_eventos')) || [
+                { id: "1", titulo: "Muestra de Casa Colinas con Alejandro", fecha: "2026-06-15", hora: "16:00" }
+            ]
+        };
+
+        // Función para guardar los cambios en la memoria del navegador de forma automática
+        function saveToLocalStorage(key) {
+            localStorage.setItem(`inmob_${key}`, JSON.stringify(DB[key]));
+        }
+
+        // Inicialización y carga de los selects dinámicamente según el arreglo de Miembros
+        window.onload = function() {
+            const pAsesorSelect = document.getElementById('p-asesor');
+            const tMiembroSelect = document.getElementById('t-miembro');
+            MIEMBROS.forEach(m => {
+                pAsesorSelect.innerHTML += `<option value="${m}">${m}</option>`;
+                tMiembroSelect.innerHTML += `<option value="${m}">${m}</option>`;
             });
 
-            // Mostrar la pestaña seleccionada
+            // Si el usuario ya se había logueado anteriormente, salta el login
+            const savedUser = localStorage.getItem('inmob_current_user');
+            if (savedUser) { loginAs(savedUser); }
+            lucide.createIcons();
+        };
+
+        // Sistema de Login (Selección de Perfil)
+        function loginAs(userName) {
+            currentUser = userName;
+            localStorage.setItem('inmob_current_user', userName);
+            document.getElementById('session-user').innerText = userName;
+            document.getElementById('login-screen').classList.add('hidden');
+            document.getElementById('app-content').classList.remove('hidden');
+            document.getElementById('app-content').classList.add('flex');
+            renderAll();
+        }
+
+        function logout() {
+            localStorage.removeItem('inmob_current_user');
+            document.getElementById('app-content').classList.remove('flex');
+            document.getElementById('app-content').classList.add('hidden');
+            document.getElementById('login-screen').classList.remove('hidden');
+        }
+
+        // Navegación de Pestañas
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(b => {
+                b.classList.remove('bg-emerald-600', 'text-white');
+                b.classList.add('bg-gray-700', 'text-gray-300');
+            });
             document.getElementById(`tab-${tabId}`).classList.remove('hidden');
-            
-            // Activar botón seleccionado
             const activeBtn = document.getElementById(`btn-${tabId}`);
             activeBtn.classList.remove('bg-gray-700', 'text-gray-300');
             activeBtn.classList.add('bg-emerald-600', 'text-white');
         }
 
-        // 3. Agregar Prospecto de forma dinámica
-        function addProspecto(e) {
+        // ================= RENDERS GENERALES DE LA APP =================
+        function renderAll() {
+            renderProspectos();
+            renderTareas();
+            renderAssets();
+            renderEventos();
+            lucide.createIcons();
+        }
+
+        // Renderizado de la lista de Prospectos con Botones de Acción
+        function renderProspectos() {
+            const tbody = document.getElementById('lista-prospectos');
+            tbody.innerHTML = "";
+            DB.prospectos.forEach(p => {
+                tbody.innerHTML += `
+                    <tr class="hover:bg-gray-750/30 border-t border-gray-700">
+                        <td class="p-3 cursor-pointer" onclick="openComentarios('${p.id}')">
+                            <div class="font-medium text-white hover:text-emerald-400 transition">${p.nombre}</div>
+                            <div class="text-xs text-gray-400">${p.telefono}</div>
+                        </td>
+                        <td class="p-3"><div class="text-white font-medium">${p.interes}</div><div class="text-xs text-emerald-400">${p.presupuesto}</div></td>
+                        <td class="p-3 text-gray-300">${p.asesor}</td>
+                        <td class="p-3"><span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded text-xs font-medium">${p.etapa}</span></td>
+                        <td class="p-3 text-right">
+                            <div class="flex justify-end gap-1.5">
+                                <button onclick="openComentarios('${p.id}')" title="Comentarios/Bitácora" class="p-1.5 bg-gray-900 border border-gray-700 hover:border-blue-500 text-blue-400 rounded-lg cursor-pointer transition"><i data-lucide="message-square" class="w-3.5 h-3.5"></i></button>
+                                <button onclick="editProspecto('${p.id}')" title="Editar Prospecto" class="p-1.5 bg-gray-900 border border-gray-700 hover:border-amber-500 text-amber-400 rounded-lg cursor-pointer transition"><i data-lucide="edit-3" class="w-3.5 h-3.5"></i></button>
+                                <button onclick="deleteProspecto('${p.id}')" title="Eliminar Prospecto" class="p-1.5 bg-gray-900 border border-gray-700 hover:border-red-500 text-red-400 rounded-lg cursor-pointer transition"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        // Acciones CRUD de Prospectos
+        function saveProspecto(e) {
             e.preventDefault();
+            const id = document.getElementById('p-id').value;
             const nombre = document.getElementById('p-nombre').value;
             const telefono = document.getElementById('p-telefono').value;
             const presupuesto = document.getElementById('p-presupuesto').value;
@@ -359,100 +400,243 @@
             const asesor = document.getElementById('p-asesor').value;
             const etapa = document.getElementById('p-etapa').value;
 
-            const tbody = document.getElementById('lista-prospectos');
-            const tr = document.createElement('tr');
-            tr.className = "hover:bg-gray-750/30 border-t border-gray-700";
-            tr.innerHTML = `
-                <td class="p-3"><div class="font-medium text-white">${nombre}</div><div class="text-xs text-gray-400">${telefono}</div></td>
-                <td class="p-3"><div class="text-white font-medium">${interes}</div><div class="text-xs text-emerald-400">${presupuesto}</div></td>
-                <td class="p-3 text-gray-300">${asesor}</td>
-                <td class="p-3"><span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded text-xs font-medium">${etapa} 📌</span></td>
-            `;
-            tbody.appendChild(tr);
-            document.getElementById('form-prospecto').reset();
+            if (id) {
+                // Actualizar Modo Edición
+                const index = DB.prospectos.findIndex(p => p.id === id);
+                if(index !== -1) {
+                    DB.prospectos[index] = { ...DB.prospectos[index], nombre, telefono, presupuesto, interes, asesor, etapa };
+                }
+            } else {
+                // Crear Nuevo Registro
+                DB.prospectos.push({ id: Date.now().toString(), nombre, telefono, presupuesto, interes, asesor, etapa, comentarios: [] });
+            }
+            saveToLocalStorage('prospectos');
+            resetProspectoForm();
+            renderProspectos();
+            lucide.createIcons();
         }
 
-        // 4. Agregar Nota de Tarea de forma dinámica
-        function addTarea(e) {
+        function editProspecto(id) {
+            const p = DB.prospectos.find(item => item.id === id);
+            if (!p) return;
+            document.getElementById('p-id').value = p.id;
+            document.getElementById('p-nombre').value = p.nombre;
+            document.getElementById('p-telefono').value = p.telefono;
+            document.getElementById('p-presupuesto').value = p.presupuesto;
+            document.getElementById('p-interes').value = p.interes;
+            document.getElementById('p-asesor').value = p.asesor;
+            document.getElementById('p-etapa').value = p.etapa;
+
+            document.getElementById('form-prospecto-title').innerHTML = `<i data-lucide="edit-3" class="text-amber-400 w-5 h-5"></i> Editar Prospecto`;
+            document.getElementById('btn-submit-text').innerText = "Actualizar Cambios";
+            document.getElementById('btn-cancel-edit').classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function resetProspectoForm() {
+            document.getElementById('form-prospecto').reset();
+            document.getElementById('p-id').value = "";
+            document.getElementById('form-prospecto-title').innerHTML = `<i data-lucide="user-plus" class="text-emerald-400 w-5 h-5"></i> Registrar Prospecto`;
+            document.getElementById('btn-submit-text').innerText = "Guardar Prospecto";
+            document.getElementById('btn-cancel-edit').classList.add('hidden');
+            lucide.createIcons();
+        }
+
+        function deleteProspecto(id) {
+            if (confirm("¿Estás seguro de que deseas eliminar este prospecto del pipeline?")) {
+                DB.prospectos = DB.prospectos.filter(p => p.id !== id);
+                saveToLocalStorage('prospectos');
+                renderProspectos();
+                closeComentarios();
+                lucide.createIcons();
+            }
+        }
+
+        // ================= SISTEMA DE COMENTARIOS/BITÁCORA INTEGRADA =================
+        function openComentarios(id) {
+            const p = DB.prospectos.find(item => item.id === id);
+            if (!p) return;
+            document.getElementById('comentarios-box').classList.remove('hidden');
+            document.getElementById('comentario-p-id').value = p.id;
+            document.getElementById('comentario-prospecto-nombre').innerText = p.nombre;
+            renderComentariosFeed(p);
+        }
+
+        function closeComentarios() {
+            document.getElementById('comentarios-box').classList.add('hidden');
+        }
+
+        function renderComentariosFeed(p) {
+            const feed = document.getElementById('feed-comentarios');
+            feed.innerHTML = "";
+            if (!p.comentarios || p.comentarios.length === 0) {
+                feed.innerHTML = `<p class="text-gray-500 italic">No hay notas de seguimiento para este cliente.</p>`;
+                return;
+            }
+            p.comentarios.forEach(c => {
+                feed.innerHTML += `
+                    <div class="bg-gray-800 p-2 rounded border border-gray-750">
+                        <div class="flex justify-between items-center mb-1 text-[10px]">
+                            <span class="text-emerald-400 font-bold">${c.user}</span>
+                            <span class="text-gray-500">${c.date || ''}</span>
+                        </div>
+                        <p class="text-gray-300">${c.texto}</p>
+                    </div>
+                `;
+            });
+            feed.scrollTop = feed.scrollHeight;
+        }
+
+        function addComentario(e) {
+            e.preventDefault();
+            const id = document.getElementById('comentario-p-id').value;
+            const texto = document.getElementById('comentario-texto').value;
+            const p = DB.prospectos.find(item => item.id === id);
+            
+            if (p) {
+                if(!p.comentarios) p.comentarios = [];
+                const hoy = new Date();
+                const dateStr = `${String(hoy.getDate()).padStart(2, '0')}/${String(hoy.getMonth()+1).padStart(2, '0')}`;
+                
+                p.comentarios.push({ user: currentUser, texto: texto, date: dateStr });
+                saveToLocalStorage('prospectos');
+                document.getElementById('comentario-texto').value = "";
+                renderComentariosFeed(p);
+            }
+        }
+
+        // ================= TAREAS OPERATIVAS CON BOTON ELIMINAR =================
+        function renderTareas() {
+            const contenedor = document.getElementById('lista-tareas');
+            contenedor.innerHTML = "";
+            DB.tareas.forEach(t => {
+                contenedor.innerHTML += `
+                    <div class="bg-gray-900 p-4 rounded-lg border border-gray-700 flex flex-col justify-between group">
+                        <div>
+                            <div class="flex justify-between items-start mb-2">
+                                <span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded text-xs font-semibold">Para: ${t.miembro}</span>
+                                <span class="text-[10px] text-gray-500 font-mono">De: ${t.user || 'Sist'}</span>
+                            </div>
+                            <p class="text-sm text-gray-300 leading-relaxed">${t.desc}</p>
+                        </div>
+                        <div class="flex justify-end mt-3 border-t border-gray-800 pt-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <button onclick="deleteTarea('${t.id}')" class="text-xs text-red-400 hover:text-red-300 flex items-center gap-1 cursor-pointer">
+                                <i data-lucide="check-circle" class="w-3.5 h-3.5"></i> Completar Tarea
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function saveTarea(e) {
             e.preventDefault();
             const miembro = document.getElementById('t-miembro').value;
             const desc = document.getElementById('t-desc').value;
-
-            const contenedor = document.getElementById('lista-tareas');
-            const div = document.createElement('div');
-            div.className = "bg-gray-900 p-4 rounded-lg border border-gray-700";
-            div.innerHTML = `
-                <div class="flex justify-between items-start mb-2">
-                    <span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded text-xs font-semibold">Para: ${miembro}</span>
-                    <span class="text-[11px] text-gray-500">Nueva</span>
-                </div>
-                <p class="text-sm text-gray-300 leading-relaxed">${desc}</p>
-            `;
-            contenedor.appendChild(div);
+            DB.tareas.push({ id: Date.now().toString(), miembro, desc, user: currentUser });
+            saveToLocalStorage('tareas');
             document.getElementById('form-tarea').reset();
+            renderTareas();
+            lucide.createIcons();
         }
 
-        // 5. Agregar Assets / Enlaces Rápidos
-        function addAsset(e) {
+        function deleteTarea(id) {
+            DB.tareas = DB.tareas.filter(t => t.id !== id);
+            saveToLocalStorage('tareas');
+            renderTareas();
+            lucide.createIcons();
+        }
+
+        // ================= BANCO DE ASSETS CON BOTON ELIMINAR =================
+        function renderAssets() {
+            const contenedor = document.getElementById('lista-assets');
+            contenedor.innerHTML = "";
+            DB.assets.forEach(a => {
+                let icon = 'link'; let color = 'text-purple-400'; let bg = 'bg-purple-500/10'; let sub = 'Recurso Enlazado';
+                if(a.tipo === 'folder') { icon = 'folder'; color = 'text-blue-400'; bg = 'bg-blue-500/10'; sub = 'Carpeta de Archivos'; }
+                if(a.tipo === 'video') { icon = 'video'; color = 'text-red-400'; bg = 'bg-red-500/10'; sub = 'Contenido Multimedia'; }
+                if(a.tipo === 'file') { icon = 'file-text'; color = 'text-amber-400'; bg = 'bg-amber-500/10'; sub = 'Documento Oficial'; }
+
+                contenedor.innerHTML += `
+                    <div class="bg-gray-900 p-3 rounded-lg border border-gray-700 hover:border-gray-600 transition flex items-center justify-between group">
+                        <a href="${a.url}" target="_blank" class="flex items-center gap-3 flex-1">
+                            <div class="${bg} p-2 rounded ${color}"><i data-lucide="${icon}" class="w-5 h-5"></i></div>
+                            <div>
+                                <div class="text-sm font-medium text-white group-hover:text-emerald-400 transition">${a.nombre}</div>
+                                <div class="text-xs text-gray-500">${sub}</div>
+                            </div>
+                        </a>
+                        <div class="flex items-center gap-2">
+                            <a href="${a.url}" target="_blank" class="text-gray-500 hover:text-white"><i data-lucide="external-link" class="w-4 h-4"></i></a>
+                            <button onclick="deleteAsset('${a.id}')" class="text-gray-500 hover:text-red-400 p-1 rounded transition cursor-pointer"><i data-lucide="trash" class="w-3.5 h-3.5"></i></button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function saveAsset(e) {
             e.preventDefault();
             const nombre = document.getElementById('a-nombre').value;
             const tipo = document.getElementById('a-tipo').value;
             const url = document.getElementById('a-url').value;
-
-            let icon = 'link';
-            let color = 'text-purple-400';
-            let bg = 'bg-purple-500/10';
-            let sub = 'Recurso Enlazado';
-
-            if(tipo === 'folder') { icon = 'folder'; color = 'text-blue-400'; bg = 'bg-blue-500/10'; sub = 'Carpeta de Archivos'; }
-            if(tipo === 'video') { icon = 'video'; color = 'text-red-400'; bg = 'bg-red-500/10'; sub = 'Contenido Multimedia'; }
-            if(tipo === 'file') { icon = 'file-text'; color = 'text-amber-400'; bg = 'bg-amber-500/10'; sub = 'Documento Oficial'; }
-
-            const contenedor = document.getElementById('lista-assets');
-            const a = document.createElement('a');
-            a.href = url;
-            a.target = "_blank";
-            a.className = "bg-gray-900 p-3 rounded-lg border border-gray-700 hover:border-emerald-500/50 hover:bg-gray-850 transition flex items-center justify-between group";
-            a.innerHTML = `
-                <div class="flex items-center gap-3">
-                    <div class="${bg} p-2 rounded ${color}"><i data-lucide="${icon}" class="w-5 h-5"></i></div>
-                    <div>
-                        <div class="text-sm font-medium text-white group-hover:text-emerald-400 transition">${nombre}</div>
-                        <div class="text-xs text-gray-500">${sub}</div>
-                    </div>
-                </div>
-                <i data-lucide="external-link" class="w-4 h-4 text-gray-500 group-hover:text-emerald-400 transition"></i>
-            `;
-            contenedor.appendChild(a);
-            lucide.createIcons(); // Recargar iconos para el nuevo elemento
+            DB.assets.push({ id: Date.now().toString(), nombre, tipo, url });
+            saveToLocalStorage('assets');
             document.getElementById('form-asset').reset();
+            renderAssets();
+            lucide.createIcons();
         }
 
-        // 6. Agregar Actividades al Calendario
-        function addEvento(e) {
+        function deleteAsset(id) {
+            if(confirm("¿Eliminar este enlace del banco de assets?")){
+                DB.assets = DB.assets.filter(a => a.id !== id);
+                saveToLocalStorage('assets');
+                renderAssets();
+                lucide.createIcons();
+            }
+        }
+
+        // ================= CALENDARIO CON BOTON ELIMINAR =================
+        function renderEventos() {
+            const contenedor = document.getElementById('lista-eventos');
+            contenedor.innerHTML = "";
+            // Ordenar por fecha próximamente
+            DB.eventos.sort((a,b) => new Date(a.fecha) - new Date(b.fecha));
+            DB.eventos.forEach(e => {
+                const fPartes = e.fecha.split('-');
+                const fFormateada = fPartes[2] ? `${fPartes[2]}/${fPartes[1]}` : e.fecha;
+                contenedor.innerHTML += `
+                    <div class="bg-gray-900 p-3 rounded-lg border border-gray-700 border-l-4 border-l-emerald-500 flex justify-between items-center group">
+                        <div>
+                            <h3 class="text-sm font-medium text-white">${e.titulo}</h3>
+                            <p class="text-xs text-gray-400 font-mono text-emerald-400">${fFormateada} - ${e.hora} hrs</p>
+                        </div>
+                        <button onclick="deleteEvento('${e.id}')" class="opacity-0 group-hover:opacity-100 p-1 text-gray-500 hover:text-red-400 rounded transition cursor-pointer" title="Remover evento">
+                            <i data-lucide="calendar-x" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                `;
+            });
+        }
+
+        function saveEvento(e) {
             e.preventDefault();
             const titulo = document.getElementById('e-titulo').value;
             const fecha = document.getElementById('e-fecha').value;
             const hora = document.getElementById('e-hora').value;
-
-            // Formatear fecha simple
-            const fPartes = fecha.split('-');
-            const fFormateada = fPartes[2] ? `${fPartes[2]}/${fPartes[1]}` : fecha;
-
-            const contenedor = document.getElementById('lista-eventos');
-            const div = document.createElement('div');
-            div.className = "bg-gray-900 p-3 rounded-lg border border-gray-700 border-l-4 border-l-emerald-500 flex justify-between items-center";
-            div.innerHTML = `
-                <div>
-                    <h3 class="text-sm font-medium text-white">${titulo}</h3>
-                    <p class="text-xs text-gray-400">Actividad Agendada</p>
-                </div>
-                <div class="text-right">
-                    <span class="bg-emerald-500/10 text-emerald-400 text-xs px-2 py-1 rounded border border-emerald-500/20 font-mono">${fFormateada} - ${hora} hrs</span>
-                </div>
-            `;
-            contenedor.appendChild(div);
+            DB.eventos.push({ id: Date.now().toString(), titulo, fecha, hora });
+            saveToLocalStorage('eventos');
             document.getElementById('form-evento').reset();
+            renderEventos();
+            lucide.createIcons();
+        }
+
+        // Eliminar evento
+        function deleteEvento(id) {
+            DB.eventos = DB.eventos.filter(e => e.id !== id);
+            saveToLocalStorage('eventos');
+            renderEventos();
+            lucide.createIcons();
         }
     </script>
 </body>
