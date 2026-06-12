@@ -37,12 +37,6 @@
                     <span class="text-sm font-medium text-white">Jorge Hernandez (Becario en sistemas)</span>
                 </button>
             </div>
-
-            <div class="mt-6 pt-4 border-t border-gray-750">
-                <button onclick="clearLocalStorageTotal()" class="text-xs text-gray-500 hover:text-red-400 transition cursor-pointer flex items-center justify-center gap-1.5 mx-auto">
-                    <i data-lucide="refresh-cw" class="w-3 h-3"></i> Limpiar memoria de este navegador
-                </button>
-            </div>
         </div>
     </div>
 
@@ -133,7 +127,7 @@
 
                     <div class="lg:col-span-2 bg-gray-800 p-5 rounded-xl border border-gray-700 overflow-hidden flex flex-col">
                         <h2 class="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-                            <i data-lucide="list-filter" class="text-emerald-400 w-5 h-5"></i> Pipeline Activo de Clientes
+                            <i data-lucide="list-filter" class="text-emerald-400 w-5 h-5"></i> Pipeline Activo de Clientes Realtime
                         </h2>
                         <div class="overflow-x-auto rounded-lg border border-gray-700 mb-6">
                             <table class="w-full text-left border-collapse">
@@ -160,7 +154,7 @@
                             <div id="feed-comentarios" class="space-y-2 max-h-40 overflow-y-auto mb-3 text-xs pr-1"></div>
                             <form onsubmit="addComentario(event)" class="flex gap-2">
                                 <input type="hidden" id="comentario-p-id">
-                                <input type="text" id="comentario-texto" required class="flex-1 bg-gray-800 border border-gray-700 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-emerald-500" placeholder="Escribe un comentario o actualización de bitácora...">
+                                <input type="text" id="comentario-texto" required class="flex-1 bg-gray-800 border border-gray-700 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-emerald-500" placeholder="Escribe un comentario...">
                                 <button type="submit" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs px-4 py-2 rounded-lg font-medium transition cursor-pointer">Comentar</button>
                             </form>
                         </div>
@@ -272,48 +266,70 @@
         </main>
 
         <footer class="bg-gray-850 p-4 text-center text-xs text-gray-500 border-t border-gray-800">
-            &copy; Inmob Ops - Panel Corporativo Privado.
+            &copy; Inmob Ops - Panel Corporativo Sincronizado en la Nube.
         </footer>
     </div>
 
-    <script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, onSnapshot, addDoc, updateDoc, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        // ⚠️ PEGA AQUÍ TU CONFIGURACIÓN DE FIREBASE (PASO 1.5) ⚠️
+        const firebaseConfig = {
+          apiKey: "AIzaSyAcy30N2rAl9UB8s3-etHpCNZsROzMMyhI",
+          authDomain: "inmob-ops.firebaseapp.com",
+          projectId: "inmob-ops",
+          storageBucket: "inmob-ops.firebasestorage.app",
+          messagingSenderId: "399437424325",
+          appId: "1:399437424325:web:2db3d9eb75da93aa45b2ac"
+};
+
+        // Inicializar Firebase y Firestore
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
         const MIEMBROS = ["Mario Alcala", "Melissa Alcala", "Jorge Hernandez"];
         let currentUser = "";
-
-        let DB = {
-            prospectos: JSON.parse(localStorage.getItem('inmob_prospectos')) || [
-                { id: "1", nombre: "Alejandro Marín", telefono: "+52 55 1234 5678", presupuesto: "$310,000 USD", interes: "Casa Colinas", asesor: "Melissa Alcala", etapa: "Propuesta Enviada 📄", comentarios: [{ user: "Melissa Alcala", texto: "Le encantó la vista de la recámara principal. Pendiente confirmar enganche.", date: "12/06" }] }
-            ],
-            tareas: JSON.parse(localStorage.getItem('inmob_tareas')) || [
-                { id: "1", miembro: "Melissa Alcala", desc: "Llamar urgentemente al prospecto Alejandro para confirmar si el depósito se hará esta semana.", user: "Mario Alcala" }
-            ],
-            assets: JSON.parse(localStorage.getItem('inmob_assets')) || [
-                { id: "1", nombre: "Carpeta Drive Máster - renders e imágenes", tipo: "folder", url: "https://drive.google.com" }
-            ],
-            eventos: JSON.parse(localStorage.getItem('inmob_eventos')) || [
-                { id: "1", titulo: "Muestra de Casa Colinas con Alejandro", fecha: "2026-06-15", hora: "16:00" }
-            ]
-        };
-
-        function saveToLocalStorage(key) {
-            localStorage.setItem(`inmob_${key}`, JSON.stringify(DB[key]));
-        }
+        
+        // Memoria volátil que se actualizará sola con Firebase
+        let DB = { prospectos: [], tareas: [], assets: [], eventos: [] };
 
         window.onload = function() {
-            // Llenar listas desplegables dinámicamente
             const pAsesorSelect = document.getElementById('p-asesor');
             const tMiembroSelect = document.getElementById('t-miembro');
-            pAsesorSelect.innerHTML = "";
-            tMiembroSelect.innerHTML = "";
+            pAsesorSelect.innerHTML = ""; tMiembroSelect.innerHTML = "";
             MIEMBROS.forEach(m => {
                 pAsesorSelect.innerHTML += `<option value="${m}">${m}</option>`;
                 tMiembroSelect.innerHTML += `<option value="${m}">${m}</option>`;
             });
-
-            // 🌟 CORRECCIÓN EXPLICITA: Se elimina la carga automática de 'inmob_current_user' 
-            // para obligar a seleccionar perfil en cada recarga de página (F5)
             logout();
-            lucide.createIcons();
+            
+            // Escuchar cambios de Firestore en tiempo real para todos los dispositivos
+            onSnapshot(collection(db, "prospectos"), (snapshot) => {
+                DB.prospectos = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                renderProspectos();
+                // Si la bitácora está abierta, refrescarla también
+                const activeId = document.getElementById('comentario-p-id').value;
+                if(activeId) {
+                    const updatedP = DB.prospectos.find(p => p.id === activeId);
+                    if(updatedP) renderComentariosFeed(updatedP);
+                }
+            });
+
+            onSnapshot(collection(db, "tareas"), (snapshot) => {
+                DB.tareas = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                renderTareas();
+            });
+
+            onSnapshot(collection(db, "assets"), (snapshot) => {
+                DB.assets = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                renderAssets();
+            });
+
+            onSnapshot(collection(db, "eventos"), (snapshot) => {
+                DB.eventos = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                renderEventos();
+            });
         };
 
         function loginAs(userName) {
@@ -322,8 +338,9 @@
             document.getElementById('login-screen').classList.add('hidden');
             document.getElementById('app-content').classList.remove('hidden');
             document.getElementById('app-content').classList.add('flex');
-            renderAll();
+            lucide.createIcons();
         }
+        window.loginAs = loginAs;
 
         function logout() {
             currentUser = "";
@@ -331,14 +348,7 @@
             document.getElementById('app-content').classList.add('hidden');
             document.getElementById('login-screen').classList.remove('hidden');
         }
-
-        // Limpieza de emergencia por cambios en esquemas locales
-        function clearLocalStorageTotal() {
-            if(confirm("¿Quieres vaciar la base de datos local de este navegador y restablecer los ejemplos?")) {
-                localStorage.clear();
-                location.reload();
-            }
-        }
+        window.logout = logout;
 
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
@@ -351,15 +361,9 @@
             activeBtn.classList.remove('bg-gray-700', 'text-gray-300');
             activeBtn.classList.add('bg-emerald-600', 'text-white');
         }
+        window.switchTab = switchTab;
 
-        function renderAll() {
-            renderProspectos();
-            renderTareas();
-            renderAssets();
-            renderEventos();
-            lucide.createIcons();
-        }
-
+        // ================= RENDERS GENERALES =================
         function renderProspectos() {
             const tbody = document.getElementById('lista-prospectos');
             tbody.innerHTML = "";
@@ -383,28 +387,30 @@
                     </tr>
                 `;
             });
+            lucide.createIcons();
         }
 
-        function saveProspecto(e) {
+        async function saveProspecto(e) {
             e.preventDefault();
             const id = document.getElementById('p-id').value;
-            const nombre = document.getElementById('p-nombre').value;
-            const telefono = document.getElementById('p-telefono').value;
-            const presupuesto = document.getElementById('p-presupuesto').value;
-            const interes = document.getElementById('p-interes').value;
-            const asesor = document.getElementById('p-asesor').value;
-            const etapa = document.getElementById('p-etapa').value;
+            const data = {
+                nombre: document.getElementById('p-nombre').value,
+                telefono: document.getElementById('p-telefono').value,
+                presupuesto: document.getElementById('p-presupuesto').value,
+                interes: document.getElementById('p-interes').value,
+                asesor: document.getElementById('p-asesor').value,
+                etapa: document.getElementById('p-etapa').value
+            };
 
             if (id) {
-                const index = DB.prospectos.findIndex(p => p.id === id);
-                if(index !== -1) { DB.prospectos[index] = { ...DB.prospectos[index], nombre, telefono, presupuesto, interes, asesor, etapa }; }
+                await updateDoc(doc(db, "prospectos", id), data);
             } else {
-                DB.prospectos.push({ id: Date.now().toString(), nombre, telefono, presupuesto, interes, asesor, etapa, comentarios: [] });
+                data.comentarios = [];
+                await addDoc(collection(db, "prospectos"), data);
             }
-            saveToLocalStorage('prospectos');
             resetProspectoForm();
-            renderProspectos();
         }
+        window.saveProspecto = saveProspecto;
 
         function editProspecto(id) {
             const p = DB.prospectos.find(item => item.id === id);
@@ -422,6 +428,7 @@
             document.getElementById('btn-cancel-edit').classList.remove('hidden');
             lucide.createIcons();
         }
+        window.editProspecto = editProspecto;
 
         function resetProspectoForm() {
             document.getElementById('form-prospecto').reset();
@@ -431,15 +438,15 @@
             document.getElementById('btn-cancel-edit').classList.add('hidden');
             lucide.createIcons();
         }
+        window.resetProspectoForm = resetProspectoForm;
 
-        function deleteProspecto(id) {
-            if (confirm("¿Eliminar este prospecto?")) {
-                DB.prospectos = DB.prospectos.filter(p => p.id !== id);
-                saveToLocalStorage('prospectos');
-                renderProspectos();
+        async function deleteProspecto(id) {
+            if (confirm("¿Eliminar este prospecto del pipeline global?")) {
+                await deleteDoc(doc(db, "prospectos", id));
                 closeComentarios();
             }
         }
+        window.deleteProspecto = deleteProspecto;
 
         function openComentarios(id) {
             const p = DB.prospectos.find(item => item.id === id);
@@ -449,14 +456,16 @@
             document.getElementById('comentario-prospecto-nombre').innerText = p.nombre;
             renderComentariosFeed(p);
         }
+        window.openComentarios = openComentarios;
 
         function closeComentarios() { document.getElementById('comentarios-box').classList.add('hidden'); }
+        window.closeComentarios = closeComentarios;
 
         function renderComentariosFeed(p) {
             const feed = document.getElementById('feed-comentarios');
             feed.innerHTML = "";
             if (!p.comentarios || p.comentarios.length === 0) {
-                feed.innerHTML = `<p class="text-gray-500 italic">No hay notas de seguimiento.</p>`;
+                feed.innerHTML = `<p class="text-gray-500 italic">No hay notas registradas.</p>`;
                 return;
             }
             p.comentarios.forEach(c => {
@@ -473,21 +482,22 @@
             feed.scrollTop = feed.scrollHeight;
         }
 
-        function addComentario(e) {
+        async function addComentario(e) {
             e.preventDefault();
             const id = document.getElementById('comentario-p-id').value;
             const texto = document.getElementById('comentario-texto').value;
             const p = DB.prospectos.find(item => item.id === id);
             if (p) {
-                if(!p.comentarios) p.comentarios = [];
+                const arrComentarios = p.comentarios || [];
                 const hoy = new Date();
                 const dateStr = `${String(hoy.getDate()).padStart(2, '0')}/${String(hoy.getMonth()+1).padStart(2, '0')}`;
-                p.comentarios.push({ user: currentUser, texto: texto, date: dateStr });
-                saveToLocalStorage('prospectos');
+                
+                arrComentarios.push({ user: currentUser, texto: texto, date: dateStr });
+                await updateDoc(doc(db, "prospectos", id), { comentarios: arrComentarios });
                 document.getElementById('comentario-texto').value = "";
-                renderComentariosFeed(p);
             }
         }
+        window.addComentario = addComentario;
 
         function renderTareas() {
             const contenedor = document.getElementById('lista-tareas');
@@ -508,24 +518,22 @@
                     </div>
                 `;
             });
-        }
-
-        function saveTarea(e) {
-            e.preventDefault();
-            const miembro = document.getElementById('t-miembro').value;
-            const desc = document.getElementById('t-desc').value;
-            DB.tareas.push({ id: Date.now().toString(), miembro, desc, user: currentUser });
-            saveToLocalStorage('tareas');
-            document.getElementById('form-tarea').reset();
-            renderTareas();
             lucide.createIcons();
         }
 
-        function deleteTarea(id) {
-            DB.tareas = DB.tareas.filter(t => t.id !== id);
-            saveToLocalStorage('tareas');
-            renderTareas();
+        async function saveTarea(e) {
+            e.preventDefault();
+            const miembro = document.getElementById('t-miembro').value;
+            const desc = document.getElementById('t-desc').value;
+            await addDoc(collection(db, "tareas"), { miembro, desc, user: currentUser });
+            document.getElementById('form-tarea').reset();
         }
+        window.saveTarea = saveTarea;
+
+        async function deleteTarea(id) {
+            await deleteDoc(doc(db, "tareas", id));
+        }
+        window.deleteTarea = deleteTarea;
 
         function renderAssets() {
             const contenedor = document.getElementById('lista-assets');
@@ -545,33 +553,29 @@
                                 <div class="text-xs text-gray-500">${sub}</div>
                             </div>
                         </a>
-                        <div class="flex items-center gap-2">
-                            <button onclick="deleteAsset('${a.id}')" class="text-gray-500 hover:text-red-400 p-1 rounded transition cursor-pointer"><i data-lucide="trash" class="w-3.5 h-3.5"></i></button>
-                        </div>
+                        <button onclick="deleteAsset('${a.id}')" class="text-gray-500 hover:text-red-400 p-1 rounded transition cursor-pointer"><i data-lucide="trash" class="w-3.5 h-3.5"></i></button>
                     </div>
                 `;
             });
+            lucide.createIcons();
         }
 
-        function saveAsset(e) {
+        async function saveAsset(e) {
             e.preventDefault();
             const nombre = document.getElementById('a-nombre').value;
             const tipo = document.getElementById('a-tipo').value;
             const url = document.getElementById('a-url').value;
-            DB.assets.push({ id: Date.now().toString(), nombre, tipo, url });
-            saveToLocalStorage('assets');
+            await addDoc(collection(db, "assets"), { nombre, tipo, url });
             document.getElementById('form-asset').reset();
-            renderAssets();
-            lucide.createIcons();
         }
+        window.saveAsset = saveAsset;
 
-        function deleteAsset(id) {
-            if(confirm("¿Eliminar asset?")){
-                DB.assets = DB.assets.filter(a => a.id !== id);
-                saveToLocalStorage('assets');
-                renderAssets();
+        async function deleteAsset(id) {
+            if(confirm("¿Eliminar recurso de la lista compartida?")){
+                await deleteDoc(doc(db, "assets", id));
             }
         }
+        window.deleteAsset = deleteAsset;
 
         function renderEventos() {
             const contenedor = document.getElementById('lista-eventos');
@@ -592,25 +596,23 @@
                     </div>
                 `;
             });
+            lucide.createIcons();
         }
 
-        function saveEvento(e) {
+        async function saveEvento(e) {
             e.preventDefault();
             const titulo = document.getElementById('e-titulo').value;
             const fecha = document.getElementById('e-fecha').value;
             const hora = document.getElementById('e-hora').value;
-            DB.eventos.push({ id: Date.now().toString(), titulo, fecha, hora });
-            saveToLocalStorage('eventos');
+            await addDoc(collection(db, "eventos"), { titulo, fecha, hora });
             document.getElementById('form-evento').reset();
-            renderEventos();
-            lucide.createIcons();
         }
+        window.saveEvento = saveEvento;
 
-        function deleteEvento(id) {
-            DB.eventos = DB.eventos.filter(e => e.id !== id);
-            saveToLocalStorage('eventos');
-            renderEventos();
+        async function deleteEvento(id) {
+            await deleteDoc(doc(db, "eventos", id));
         }
+        window.deleteEvento = deleteEvento;
     </script>
 </body>
 </html>
